@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { Container } from '@material-ui/core';
 import Footer from 'components/Footer.js';
@@ -19,20 +19,6 @@ const switchRoutes = (
   </Switch>
 );
 
-const name = "현황판";
-
-const NavBarName = (name) => {
-  switch (window.location.pathname.split('/')[2]) {
-    case "dashboard":
-      name = "현황판"
-      break;
-    case "eqenroll":
-      name = "장비 등록"
-      break;
-  }
-}
-  
-
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
@@ -51,9 +37,31 @@ const useStyles = makeStyles(theme => ({
 export default function Home() {
   const classes = useStyles();
 
+  const [themeName, setThemeName] = React.useState("현황판");
+
+  function NavBarName() {
+    switch (window.location.pathname.split('/')[2]) {
+      case "eqenroll":
+        setThemeName("장비 등록");
+        break;
+      case "profile":
+        setThemeName("유저 프로필");
+        break;
+      case "eqlist":
+        setThemeName("장비 리스트");
+        break;
+      default:
+        setThemeName("현황판");
+        break;
+    }
+  }
+  useEffect(()=> {
+    NavBarName();
+  })
+
   return (
     <div className={classes.root}>
-      <NavBar themeName = {name}/>
+      <NavBar themeName = {themeName}/>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container  style={{minHeight:"100vh"}} maxWidth="xl" className={classes.container}>

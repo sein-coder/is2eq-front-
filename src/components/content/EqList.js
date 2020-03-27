@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 // react plugin for creating charts
 // @material-ui/core
 import { makeStyles } from "@material-ui/core/styles";
@@ -21,14 +21,93 @@ import styles from "assets/css/dashboardStyle.js";
 const useStyles = makeStyles(styles);
 
 export default function EqList() {
-
-  axios.get('http://10.10.1.103:8080/admin/okreq')
+  const [allarray, setAllArray ] = React.useState([]);
+  const [cameraarray, setCameraArray] = React.useState([]);
+  const [pcarray, setPcArray] = React.useState([]);
+  const [etcarray, setEtcArray] = React.useState([]);
+  
+  useEffect(() => {
+    axios.get('/equipments')
     .then(function(response){
-      console.log(response);
+      const dataArray = [];
+      response.data.forEach(element => {
+        const temp =[];
+        Object.values(element).forEach(item => {
+          if(item == null){
+            temp.push("미기재")
+          }else {
+            temp.push(item+"");
+          }
+        });
+        dataArray.push(temp);
+      });
+      setAllArray(dataArray);
     })
     .catch(function(error){
       console.log(error);
     })
+  axios.get('/equipments?type=category_idx&filter=1')
+    .then(function(response){
+      const dataArray = [];
+      response.data.forEach(element => {
+        const temp =[];
+        Object.values(element).forEach(item => {
+          if(item == null){
+            temp.push("미기재")
+          }else {
+            temp.push(item+"");
+          }
+        });
+        dataArray.push(temp);
+      });
+      setCameraArray(dataArray);
+    })
+    .catch(function(error){
+      console.log(error);
+    })
+
+    axios.get('/equipments?type=category_idx&filter=2')
+    .then(function(response){
+      const dataArray = [];
+      response.data.forEach(element => {
+        const temp =[];
+        Object.values(element).forEach(item => {
+          if(item == null){
+            temp.push("미기재")
+          }else {
+            temp.push(item+"");
+          }
+        });
+        dataArray.push(temp);
+      });
+      setPcArray(dataArray);
+    })
+    .catch(function(error){
+      console.log(error);
+    })
+
+    axios.get('/equipments?type=category_idx&filter=3')
+    .then(function(response){
+      const dataArray = [];
+      response.data.forEach(element => {
+        const temp =[];
+        Object.values(element).forEach(item => {
+          if(item == null){
+            temp.push("미기재")
+          }else {
+            temp.push(item+"");
+          }
+        });
+        dataArray.push(temp);
+      });
+      setEtcArray(dataArray);
+    })
+    .catch(function(error){
+      console.log(error);
+    })
+  }, [])
+
+  
 
   const classes = useStyles();
   return (
@@ -36,7 +115,7 @@ export default function EqList() {
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <CustomTabs
-            title="변경사항:"
+            title="카테고리:"
             headerColor="primary"
             tabs={[
               {
@@ -45,13 +124,8 @@ export default function EqList() {
                 tabContent: (
                   <Table
                 tableHeaderColor="warning"
-                tableHead={["ID", "Name", "Salary", "Country"]}
-                tableData={[
-                  ["1", "Dakota Rice", "$36,738", "Niger"],
-                  ["2", "Minerva Hooper", "$23,789", "Curaçao"],
-                  ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
-                  ["4", "Philip Chaney", "$38,735", "Korea, South"]
-                ]}
+                tableHead={["장비번호", "분류", "장소", "장비 현황", "프로젝트", "용도", "자산 소유", "소유주명", "입고 날짜", "반납날짜", "비고"]}
+                tableData={allarray}
               />
                 )
               },
@@ -62,12 +136,7 @@ export default function EqList() {
                   <Table
                 tableHeaderColor="warning"
                 tableHead={["ID", "Name", "Salary", "Country"]}
-                tableData={[
-                  ["1", "Dakota Rice", "$36,738", "Niger"],
-                  ["2", "Minerva Hooper", "$23,789", "Curaçao"],
-                  ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
-                  ["4", "Philip Chaney", "$38,735", "Korea, South"]
-                ]}
+                tableData={cameraarray}
               />
                 )
               },
@@ -78,12 +147,7 @@ export default function EqList() {
                   <Table
                 tableHeaderColor="warning"
                 tableHead={["ID", "Name", "Salary", "Country"]}
-                tableData={[
-                  ["1", "Dakota Rice", "$36,738", "Niger"],
-                  ["2", "Minerva Hooper", "$23,789", "Curaçao"],
-                  ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
-                  ["4", "Philip Chaney", "$38,735", "Korea, South"]
-                ]}
+                tableData={pcarray}
               />
                 )
               },
@@ -94,12 +158,7 @@ export default function EqList() {
                   <Table
                 tableHeaderColor="warning"
                 tableHead={["ID", "Name", "Salary", "Country"]}
-                tableData={[
-                  ["1", "Dakota Rice", "$36,738", "Niger"],
-                  ["2", "Minerva Hooper", "$23,789", "Curaçao"],
-                  ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
-                  ["4", "Philip Chaney", "$38,735", "Korea, South"]
-                ]}
+                tableData={etcarray}
               />
                 )
               }

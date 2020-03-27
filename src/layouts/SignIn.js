@@ -4,6 +4,7 @@ import {Link, Grid, Box, Avatar, CssBaseline, TextField,
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import bgImg from "assets/img/cover.jpeg";
+import Axios from 'axios';
 
 function Copyright() {
   return (
@@ -46,6 +47,33 @@ const useStyles = makeStyles(theme => ({
 export default function SignIn() {
   const classes = useStyles();
 
+  const [id, setId] = React.useState('');
+
+  const handleChangeId = event => {
+      setId(event.target.value);
+  };
+
+  const [pw, setPw] = React.useState('');
+
+  const handleChangePw = event => {
+      setPw(event.target.value);
+  };
+
+  function handleClick(e) {
+    e.preventDefault();
+    Axios.post('/users/login', {
+      "user_id" : {id}.id,
+      "user_pw" : {pw}.pw
+    }).then( respose => {
+      if(respose.data.user_idx != null){
+          alert("로그인 성공");
+          window.location.href = "/home";
+      }
+    }).catch( error => {
+      console.log("로그인 실패");
+    })
+  }
+
   return (
     <div className={classes.wrapper} style={{backgroundImage: `url(${bgImg})`, backgroundSize:"cover"}}>
     <Container component="main" maxWidth="xs">
@@ -59,6 +87,8 @@ export default function SignIn() {
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
+            value={id}
+            onChange={handleChangeId}
             variant="outlined"
             margin="normal"
             required
@@ -70,6 +100,8 @@ export default function SignIn() {
             autoFocus
           />
           <TextField
+            value={pw}
+            onChange={handleChangePw}
             variant="outlined"
             margin="normal"
             required
@@ -86,7 +118,8 @@ export default function SignIn() {
           />
           <Button
             type="submit"
-            href="/home"
+            href="#"
+            onClick = {handleClick}
             fullWidth
             variant="contained"
             color="primary"

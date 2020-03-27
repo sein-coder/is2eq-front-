@@ -11,6 +11,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import bgImg from 'assets/img/cover.jpeg';
 
+import axios from 'axios';
+
 function Copyright() {
     return (
       <Typography variant="body2" color="textSecondary" align="center">
@@ -53,16 +55,47 @@ export default function SignUp() {
   const classes = useStyles();
 
   const [gender, setGender] = React.useState('');
+  const [id,setId] = React.useState('');
+  const [pw,setPw] = React.useState('');
+  const [name,setName] = React.useState('');
+  const [phone,setPhone] = React.useState('');
+  const [email,setEmail] = React.useState('');
+  const [team,setTeam] = React.useState('');
 
-  const handleChange = event => {
-      setGender(event.target.value);
-  };
+  const handleChange = e => { setGender(e.target.value); };
+  const handleChangeId = e => { setId(e.target.value) };
+  const handleChangePw = e => { setPw(e.target.value) };
+  const handleChangeName = e => { setName(e.target.value) };
+  const handleChangePhone = e => { setPhone(e.target.value) };
+  const handleChangeEmail = e => { setEmail(e.target.value) };
+  const handleChangeTeam = e => { setTeam(e.target.value) };
+  
+  const handleClick = e => {
+    e.preventDefault();
+    axios.post('/users/', {
+      "user_id" : {id}.id,
+      "user_pw" : {pw}.pw,
+      "user_name" : {name}.name,
+      "user_email" : {email}.email,
+      "user_phone" : {phone}.phone,
+      "user_team" : {team}.team,
+      "user_gender" : {gender}.gender
+    }).then( respose => {
+      console.log(respose.data);
+      if(respose.data > 0){
+          alert("회원가입 성공");
+          window.location.href = "/signin";
+      }
+    }).catch( error => {
+      console.log("회원가입 실패");
+    })
+  }
 
   return (
     <div className={classes.wrapper} style={{backgroundImage: `url(${bgImg})`, backgroundSize:"cover"}}>
     <Container component="main" maxWidth="sm">
       <CssBaseline />
-      <div className={classes.paper} spacing={1}>
+      <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
@@ -70,9 +103,11 @@ export default function SignUp() {
           Sign up
         </Typography>
         <form className={classes.form} noValidate>
-              <Grid container>
+              <Grid container spacing={1}>
                   <Grid item xs={6}>
                       <TextField
+                          value={id}
+                          onChange={handleChangeId}
                           variant="outlined"
                           margin="normal"
                           required
@@ -83,8 +118,11 @@ export default function SignUp() {
                           autoComplete="id"
                       />
                   </Grid>
+                  <Grid item xs={6}/>
                   <Grid item xs={6}>
                       <TextField
+                          value={pw}
+                          onChange={handleChangePw}
                           variant="outlined"
                           margin="normal"
                           required
@@ -95,8 +133,11 @@ export default function SignUp() {
                           autoComplete="pw"
                       />
                   </Grid>
-                  <Grid item xs={8}>
+                  <Grid item xs ={4}/>
+                  <Grid item xs={3}>
                       <TextField
+                          value={name}
+                          onChange={handleChangeName} 
                           variant="outlined"
                           margin="normal"
                           required
@@ -107,20 +148,11 @@ export default function SignUp() {
                           autoComplete="name"
                       />
                   </Grid>
-                  <Grid item xs={8}>
+                  <Grid item xs={2}/>
+                  <Grid item xs={6}>
                       <TextField
-                          variant="outlined"
-                          margin="normal"
-                          required
-                          fullWidth
-                          id="email"
-                          label="이메일 주소"
-                          name="email"
-                          autoComplete="email"
-                      />
-                  </Grid>
-                  <Grid item xs={8}>
-                      <TextField
+                          value={phone}
+                          onChange={handleChangePhone}
                           variant="outlined"
                           margin="normal"
                           required
@@ -131,18 +163,30 @@ export default function SignUp() {
                           autoComplete="phone"
                       />
                   </Grid>
+                  <Grid item xs={8}>
+                      <TextField
+                          value={email}
+                          onChange={handleChangeEmail}
+                          variant="outlined"
+                          margin="normal"
+                          required
+                          fullWidth
+                          id="email"
+                          label="이메일 주소"
+                          name="email"
+                          autoComplete="email"
+                      />
+                  </Grid>
+                  
                   <Grid item xs={6}>
                       <FormControl className={classes.formControl}>
                           <InputLabel id="select-label">소속</InputLabel>
                           <Select
                           labelid="select-label"
                           id="simple-select"
-                          value={gender}
-                          onChange={handleChange}
+                          value={team}
+                          onChange={handleChangeTeam}
                           >
-                          <MenuItem value="">
-                              <em>없음</em>
-                          </MenuItem>
                           <MenuItem value={"IOT SOLUTION 1 TEAM"}>IOT 솔루션 1팀</MenuItem>
                           <MenuItem value={"IOT SOLUTION 2 TEAM"}>IOT 솔루션 2팀</MenuItem>
                           </Select>
@@ -152,7 +196,7 @@ export default function SignUp() {
                   <Grid item xs={4}>
                       <FormControl component="fieldset">
                           <FormLabel component="legend" style={{display:"inline", marginBottom:"15px"}}>성별</FormLabel>
-                          <RadioGroup row aria-label="position" name="position" defaultValue="top">
+                          <RadioGroup row aria-label="position" name="position" defaultValue="top" value={gender} onChange={handleChange}>
                               <FormControlLabel
                               value="m"
                               control={<Radio color="primary" />}
@@ -172,7 +216,8 @@ export default function SignUp() {
           </form>
           <Button
             type="submit"
-            href="/signin"
+            href="#"
+            onClick={handleClick}
             fullWidth
             variant="contained"
             color="primary"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 // react plugin for creating charts
 // @material-ui/core
 import { makeStyles } from "@material-ui/core/styles";
@@ -7,6 +7,7 @@ import BuildIcon from '@material-ui/icons/Build';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows';
 import ExplicitIcon from '@material-ui/icons/Explicit';
+import {Link} from 'react-router-dom';
 
 import Warning from "@material-ui/icons/Warning";
 // core components
@@ -21,12 +22,50 @@ import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
+import axios from "axios"
 
 import styles from "assets/css/dashboardStyle.js";
 
 const useStyles = makeStyles(styles);
 
 export default function Dashboard() {
+  const [all, setAll] = React.useState(0);
+  const [cam, setCam] = React.useState(0);
+  const [pc, setPc] = React.useState(0);
+  const [etc, setEtc] = React.useState(0);
+  useEffect(() => {
+    axios.get('/equipments')
+    .then(function(response){
+      setAll(response.data.length);
+    })
+    .catch(function(error){
+      console.log(error);
+    })
+  axios.get('/equipments?type=category_idx&filter=1')
+    .then(function(response){
+      setCam(response.data.length);
+    })
+    .catch(function(error){
+      console.log(error);
+    })
+
+    axios.get('/equipments?type=category_idx&filter=2')
+    .then(function(response){
+      setPc(response.data.length);
+    })
+    .catch(function(error){
+      console.log(error);
+    })
+
+    axios.get('/equipments?type=category_idx&filter=3')
+    .then(function(response){
+      setEtc(response.data.length);
+    })
+    .catch(function(error){
+      console.log(error);
+    })
+  }, [])
+
   const classes = useStyles();
   return (
     <div>
@@ -39,7 +78,7 @@ export default function Dashboard() {
               </CardIcon>
               <p style={{fontSize:"25px"}} className={classes.cardCategory}>전체 장비 현황</p>
               <h3 style={{fontSize:"20px"}} className={classes.cardTitle}>
-                121/123 <small>개</small>
+                {all} <small>개</small>
               </h3>
             </CardHeader>
             <CardFooter stats>
@@ -47,9 +86,9 @@ export default function Dashboard() {
                 <Danger>
                   <Warning />
                 </Danger>
-                <a href="#pablo" onClick={e => e.preventDefault()}>
+                <Link to="/home/eqenroll">
                   장비 등록
-                </a>
+                </Link>
               </div>
             </CardFooter>
           </Card>
@@ -62,7 +101,7 @@ export default function Dashboard() {
               </CardIcon>
               <p style={{fontSize:"25px"}} className={classes.cardCategory}>카메라 장비 현황</p>
               <h3 style={{fontSize:"20px"}} className={classes.cardTitle}>
-                121/123 <small>개</small>
+                {cam} <small>개</small>
               </h3>
             </CardHeader>
             <CardFooter stats>
@@ -70,9 +109,9 @@ export default function Dashboard() {
                 <Danger>
                   <Warning />
                 </Danger>
-                <a href="#pablo" onClick={e => e.preventDefault()}>
+                <Link to="/home/eqenroll">
                   카메라 장비 등록
-                </a>
+                </Link>
               </div>
             </CardFooter>
           </Card>
@@ -85,7 +124,7 @@ export default function Dashboard() {
               </CardIcon>
               <p style={{fontSize:"25px"}} className={classes.cardCategory}>PC 장비 현황</p>
               <h3 style={{fontSize:"20px"}} className={classes.cardTitle}>
-                121/123 <small>개</small>
+                {pc} <small>개</small>
               </h3>
             </CardHeader>
             <CardFooter stats>
@@ -93,9 +132,9 @@ export default function Dashboard() {
                 <Danger>
                   <Warning />
                 </Danger>
-                <a href="#pablo" onClick={e => e.preventDefault()}>
+                <Link to="/home/eqenroll">
                   PC 장비 등록
-                </a>
+                </Link>
               </div>
             </CardFooter>
           </Card>
@@ -108,7 +147,7 @@ export default function Dashboard() {
               </CardIcon>
               <p style={{fontSize:"25px"}} className={classes.cardCategory}>기타 장비 현황</p>
               <h3 style={{fontSize:"20px"}} className={classes.cardTitle}>
-                75/80 <small>개</small>
+                {etc} <small>개</small>
               </h3>
             </CardHeader>
             <CardFooter stats>
@@ -116,9 +155,9 @@ export default function Dashboard() {
                 <Danger>
                   <Warning />
                 </Danger>
-                <a href="#pablo" onClick={e => e.preventDefault()}>
+                <Link to="/home/eqenroll">
                   기타 장비 등록
-                </a>
+                </Link>
               </div>
             </CardFooter>
           </Card>
