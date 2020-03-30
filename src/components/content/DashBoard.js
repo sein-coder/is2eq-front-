@@ -167,6 +167,7 @@ export default function Dashboard() {
       <GridContainer>
         <GridItem xs={12} sm={12} md={6}>
           <CustomTabs
+            selectTab={0}
             title="변경사항:"
             headerColor="primary"
             tabs={[
@@ -178,7 +179,7 @@ export default function Dashboard() {
                 tableHeaderColor="warning"
                 tableHead={["ID", "Name", "Salary", "Country"]}
                 tableData={[
-                  ["1", "Dakota Rice", "$36,738", "Niger"],
+                  ["1", "Dakota Rice", "$36,738", "Niger" ],
                   ["2", "Minerva Hooper", "$23,789", "Curaçao"],
                   ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
                   ["4", "Philip Chaney", "$38,735", "Korea, South"]

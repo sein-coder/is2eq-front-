@@ -6,19 +6,20 @@ import PropTypes from "prop-types";
 
 // material-ui components
 import { makeStyles } from "@material-ui/core/styles";
-import { Tab, Tabs } from "@material-ui/core";
+import {Button, Tab, Tabs, Box} from "@material-ui/core";
 // core components
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 
 import styles from "assets/css/customTabsStyle.js";
+import CardFooter from "components/Card/CardFooter";
 
 const useStyles = makeStyles(styles);
 
 export default function CustomTabs(props) {
   const classes = useStyles();
-  const { headerColor, plainTabs, tabs, title, rtlActive, selectTab } = props;
+  const { headerColor, plainTabs, tabs, title, rtlActive, selectTab, button } = props;
   const cardTitle = classNames({
     [classes.cardTitle]: true,
     [classes.cardTitleRTL]: rtlActive
@@ -74,6 +75,16 @@ export default function CustomTabs(props) {
           return null;
         })}
       </CardBody>
+      <CardFooter>
+        <Box style={{width:"100%"}} display="flex" flexDirection="row-reverse" p={1} m={1}>
+          <Box p={1}>
+            <Button style={{backgroundColor:"#9c27b0" }}
+            color="primary"
+            href="#"
+            variant="contained">{button}</Button>
+          </Box>
+        </Box>
+      </CardFooter>
     </Card>
   );
 }
@@ -98,4 +109,5 @@ CustomTabs.propTypes = {
   ),
   rtlActive: PropTypes.bool,
   plainTabs: PropTypes.bool,
+  button:PropTypes.string
 };

@@ -8,13 +8,15 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import EqList from 'components/content/EqList.js';
 import EqEnroll from 'components/content/EqEnroll.js';
 import Profile from 'components/content/Profile.js';
+import EqDetail from 'components/content/EqDetail.js';
 
 const switchRoutes = (
   <Switch>
     <Route path="/home/dashboard" component={DashBoard}/>
     <Route path="/home/profile" component={Profile}/>
-    <Route path="/home/eqenroll" component={EqEnroll}/>
+    <Route path="/home/eqenroll" component={() => <EqEnroll selectTab = {0}/>}/>
     <Route path="/home/eqlist" component={EqList}/>
+    <Route path="/home/equipments" component={EqDetail}/>
     <Redirect from="/home" to="/home/dashboard" />
   </Switch>
 );

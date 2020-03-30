@@ -4,47 +4,34 @@ import { makeStyles } from "@material-ui/core/styles";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
-import { Select, FormControl, FormHelperText, MenuItem, InputLabel, } from '@material-ui/core';
+import { Select, FormControl, FormHelperText, MenuItem, InputLabel, TextField } from '@material-ui/core';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import styles from "assets/css/customInputStyle.js";
+import PropTypes from "prop-types";
 
-
-const styles = {
-  cardCategoryWhite: {
-    color: "rgba(255,255,255,.62)",
-    margin: "0",
-    fontSize: "14px",
-    marginTop: "0",
-    marginBottom: "0"
-  },
-  cardTitleWhite: {
-    color: "#FFFFFF",
-    marginTop: "0px",
-    minHeight: "auto",
-    fontWeight: "300",
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-    marginBottom: "3px",
-    textDecoration: "none"
-  }
-};
+import axios from 'axios';
 
 const useStyles = makeStyles(styles);
 
-export default function EtcEnroll() {
+export default function CameraDetail(props) {
   const classes = useStyles();
 
-  const [camera_ip, setCamera_ip] = React.useState('');
-  const [camera_id, setCamera_id] = React.useState('');
-  const [camera_pw, setCamera_pw] = React.useState('');
-  const [camera_mac_addr, setCamera_mac_addr] = React.useState('');
-  const [camera_brand, setCamera_brand] = React.useState('');
-  const [camera_model_name, setCamera_model_name] = React.useState('');
+  const {data} = props;
+
+  console.log(data);
+
+  const [camera_ip, setCamera_ip] = React.useState(data.camera_ip);
+  const [camera_id, setCamera_id] = React.useState(data.camera_id);
+  const [camera_pw, setCamera_pw] = React.useState(data.camera_pw);
+  const [camera_mac_addr, setCamera_mac_addr] = React.useState(data.camera_mac_addr!==null?data.camera_mac_addr:"");
+  const [camera_brand, setCamera_brand] = React.useState(data.camera_brand);
+  const [camera_model_name, setCamera_model_name] = React.useState(data.camera_model_name);
 
   const handleChangeIp = e => {setCamera_ip(e.target.value)};
   const handleChangeId = e => {setCamera_id(e.target.value)};
@@ -56,11 +43,11 @@ export default function EtcEnroll() {
   const [location, setLocation] = React.useState(1);
   const [project, setProject] = React.useState(1);
   const [status, setStatus] = React.useState(1);
-  const [possession, setPossession] = React.useState(1);
+  const [possession, setPossession] = React.useState(5);
   const [equip_remarks, setRemarks] = React.useState('');
-  const [owner_name, setOwner_name] = React.useState('');
-  const [received_date, setReceivedDate] = React.useState(new Date());
-  const [return_date, setReturnDate] = React.useState(new Date());
+  const [owner_name, setOwner_name] = React.useState(data.owner_name);
+  const [received_date, setReceivedDate] = React.useState(data.received_date);
+  const [return_date, setReturnDate] = React.useState(data.return_date);
 
   const handleChangeLocation = e => { setLocation(e.target.value); };
   const handleChangeProject = e => { setProject(e.target.value); };
@@ -68,77 +55,116 @@ export default function EtcEnroll() {
   const handleChangePossession = e => { setPossession(e.target.value); };
   const handleChangeRemarks = e => {setRemarks(e.target.value)};
   const handleOwnerName = e => {setOwner_name(e.target.value)};
-  const handleReceivedDate = e => {setReceivedDate(e.target.value)};
-  const handleReturnDate = e => {setReturnDate(e.target.value)};
+  const handleReceivedDate = date => {setReceivedDate(date)};
+  const handleReturnDate = date => {setReturnDate(date)};
+
+
+  const handleOnClick = (e) => {
+    e.preventDefault();
+    if({camera_ip}.camera_ip !== '' && {camera_id}.camera_id !== '' && {camera_pw}.camera_pw !== ''){
+        axios.post('/equipments', {
+            "category_idx" : 1,
+            "location_idx" : {location}.location,
+            "project_idx" : {project}.project,
+            "equip_status" : {status}.status,
+            "equip_possession" : {possession}.possession + 4,
+            "equip_remarks" : {equip_remarks}.equip_remarks,
+            "camera_ip" : {camera_ip}.camera_ip,
+            "camera_id" : {camera_id}.camera_id,
+            "camera_pw" : {camera_pw}.camera_pw,
+            "camera_mac_addr" : {camera_mac_addr}.camera_mac_addr,
+            "camera_brand" : {camera_brand}.camera_brand,
+            "camera_model_name" : {camera_model_name}.camera_model_name,
+            "owner_name" : {owner_name}.owner_name,
+            "received_date" : {received_date}.received_date,
+            "return_date" : {return_date}.return_date
+        }).then(response => {
+            console.log(response.data);
+        }).catch(error => {
+            console.log(error);
+        });
+    } else {
+        alert('필수 항목을 채워주세요');
+    }
+  }
 
   return (
     <div style={{paddingLeft:"100px", paddingRight:"100px"}}>
               <GridContainer>
                 <GridItem xs={6} sm={6} md={2}>
-                  <CustomInput
+                  <TextField
                     value = {camera_ip}
                     onChange = {handleChangeIp}
-                    labelText="카메라 IP"
+                    label="카메라 IP"
                     id="camera_ip"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
+                    fullWidth
+                    margin="normal"
+                    required
+                    name="camera_ip"
+                    autoComplete="camera_ip"
                   />
                 </GridItem>
                 <GridItem xs={4} sm={4} md={2}>
-                  <CustomInput
+                  <TextField
                     value = {camera_id}
                     onChange = {handleChangeId}
-                    labelText="카메라 접속 ID"
+                    label="카메라 접속 ID"
                     id="camera_id"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
+                    fullWidth
+                    margin="normal"
+                    required
+                    name="camera_id"
+                    autoComplete="camera_id"
                   />
                 </GridItem>
                 <GridItem xs={4} sm={4} md={2}>
-                  <CustomInput
+                  <TextField
                     value = {camera_pw}
                     onChange = {handleChangePw}
-                    labelText="카메라 PassWord"
+                    label="카메라 PassWord"
                     id="camera_pw"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
+                    fullWidth
+                    margin="normal"
+                    required
+                    name="camera_pw"
+                    autoComplete="camera_pw"
                   />
                 </GridItem>
                 <GridItem xs={6} sm={6} md={3}>
-                  <CustomInput
+                  <TextField
                     value = {camera_mac_addr}
                     onChange = {handleChangeMac}
-                    labelText="카메라 MAC 주소"
+                    label="카메라 MAC 주소"
                     id="camera_mac_addr"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
+                    fullWidth
+                    margin="normal"
+                    name="camera_mac_addr"
+                    autoComplete="camera_mac_addr"
                   />
                 </GridItem>
                 <GridItem xs={4} sm={4} md={2}/>
                 <GridItem xs={4} sm={4} md={2}>
-                  <CustomInput
+                  <TextField
                     value = {camera_brand}
                     onChange = {handleChangeBrand}
-                    labelText="카메라 브랜드"
+                    label="카메라 브랜드"
                     id="camera_brand"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
+                    fullWidth
+                    margin="normal"
+                    name="camera_brand"
+                    autoComplete="camera_brand"
                   />
                 </GridItem>
                 <GridItem xs={4} sm={4} md={2}>
-                  <CustomInput
+                 <TextField
                     value = {camera_model_name}
                     onChange = {handleChangeModelName}
-                    labelText="카메라 모델 명"
+                    label="카메라 모델 명"
                     id="camera_model_name"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
+                    fullWidth
+                    margin="normal"
+                    name="camera_model_name"
+                    autoComplete="camera_model_name"
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={7}/>
@@ -210,7 +236,7 @@ export default function EtcEnroll() {
                           onChange={handleChangePossession}
                           >
                           <MenuItem value={5} selected>미확인</MenuItem>
-                          <MenuItem value={6}>소유</MenuItem>
+                          <MenuItem value={6} >소유</MenuItem>
                           <MenuItem value={7}>대여</MenuItem>
                           </Select>
                           <FormHelperText>장비 소유현황</FormHelperText>
@@ -218,14 +244,15 @@ export default function EtcEnroll() {
                 </GridItem>
                 <GridItem xs={8} sm={8} md={4}></GridItem>
                 <GridItem xs={4} sm={4} md={2}>
-                  <CustomInput
+                  <TextField style={{marginTop : "35px"}}
                     value = {owner_name}
                     onChange = {handleOwnerName}
-                    labelText="소유주 명"
+                    label="소유주 명"
                     id="owner_name"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
+                    fullWidth
+                    margin="normal"
+                    name="owner_name"
+                    autoComplete="owner_name"
                   />
                 </GridItem>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -244,6 +271,8 @@ export default function EtcEnroll() {
                             }}
                         />
                     </GridItem>
+                </MuiPickersUtilsProvider>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <GridItem xs={4} sm={4} md={2}>
                         <KeyboardDatePicker style={{marginTop : "35px"}}
                             disableToolbar
@@ -262,23 +291,27 @@ export default function EtcEnroll() {
                 </MuiPickersUtilsProvider>
 
                 <GridItem xs={12} sm={12} md={12}>
-                  <CustomInput
+                  <TextField
                     value = {equip_remarks}
                     onChange = {handleChangeRemarks}
-                    labelText="비고"
+                    label="비고"
                     id="equip_remarks"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                    inputProps={{
-                      multiline: true,
-                      rows: 5
-                    }}
+                    fullWidth
+                    margin="normal"
+                    name="equip_remarks"
+                    autoComplete="equip_remarks"
+                    multiline={true}
+                    rows={5}
                   />
                 </GridItem>
 
               </GridContainer>
-              <Button style={{marginTop: "2rem"}} color="primary">장비 등록</Button>
+              <Button style={{marginTop: "2rem"}} color="primary" onClick={handleOnClick}>정보 수정</Button>
+              <Button style={{marginTop: "2rem", marginLeft : "2rem"}} color="primary" onClick={handleOnClick}>나가기</Button>
     </div>
   );
 }
+
+CameraDetail.propTypes = {
+  data : PropTypes.object
+};

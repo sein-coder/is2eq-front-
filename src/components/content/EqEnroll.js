@@ -1,6 +1,7 @@
 import React from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+import PropTypes from "prop-types";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -10,8 +11,9 @@ import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows';
 import ExplicitIcon from '@material-ui/icons/Explicit';
 
-import CameraEnroll from 'components/content/CameraEnroll';
-import EtcEnroll from 'components/content/EtcEnroll';
+import CameraEnroll from 'components/content/Enroll/CameraEnroll';
+import EtcEnroll from 'components/content/Enroll/EtcEnroll';
+import PcEnroll from "components/content/Enroll/PCEnroll";
 const styles = {
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -33,13 +35,17 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-export default function EqEnroll() {
+export default function EqEnroll(props) {
+
+  const {selectTab} = props;
+
   const classes = useStyles();
   return (
     <div>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <CustomTabs
+            selectTab = {selectTab}
             title="카테고리:"
             headerColor="primary"
             tabs={[
@@ -54,7 +60,7 @@ export default function EqEnroll() {
                 tabName: "PC 장비",
                 tabIcon: DesktopWindowsIcon,
                 tabContent: (
-                  <CameraEnroll/>
+                  <PcEnroll/>
                 )
               },
               {
@@ -71,3 +77,7 @@ export default function EqEnroll() {
     </div>
   );
 }
+
+EqEnroll.propTypes = {
+  selectTab : PropTypes.number
+};

@@ -11,8 +11,8 @@ import ExplicitIcon from '@material-ui/icons/Explicit';
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-import Table from "components/Table/Table.js";
-import CustomTabs from "components/Tab/CustomTabs.js";
+import EqListTable from "components/Table/EqListTable.js";
+import EqListTab from "components/Tab/EqListTab.js";
 
 import axios from "axios"
 
@@ -28,15 +28,17 @@ export default function EqList() {
   
   useEffect(() => {
     axios.get('/equipments')
-    .then(function(response){
+      .then(function(response){
       const dataArray = [];
       response.data.forEach(element => {
         const temp =[];
-        Object.values(element).forEach(item => {
-          if(item == null){
-            temp.push("미기재")
-          }else {
-            temp.push(item+"");
+        Object.values(element).forEach((item,index)=> {
+          if(Object.values(element).length-1 !== index){
+            if(item == null || item === ""){
+              temp.push("미기재")
+            }else {
+              temp.push(item+"");
+            }
           }
         });
         dataArray.push(temp);
@@ -51,11 +53,13 @@ export default function EqList() {
       const dataArray = [];
       response.data.forEach(element => {
         const temp =[];
-        Object.values(element).forEach(item => {
-          if(item == null){
-            temp.push("미기재")
-          }else {
-            temp.push(item+"");
+        Object.values(element).forEach((item,index)=> {
+          if(Object.values(element).length-1 !== index){
+            if(item == null){
+              temp.push("미기재")
+            }else {
+              temp.push(item+"");
+            }
           }
         });
         dataArray.push(temp);
@@ -71,11 +75,13 @@ export default function EqList() {
       const dataArray = [];
       response.data.forEach(element => {
         const temp =[];
-        Object.values(element).forEach(item => {
-          if(item == null){
-            temp.push("미기재")
-          }else {
-            temp.push(item+"");
+        Object.values(element).forEach((item,index)=> {
+          if(Object.values(element).length-1 !== index){
+            if(item == null){
+              temp.push("미기재")
+            }else {
+              temp.push(item+"");
+            }
           }
         });
         dataArray.push(temp);
@@ -91,11 +97,13 @@ export default function EqList() {
       const dataArray = [];
       response.data.forEach(element => {
         const temp =[];
-        Object.values(element).forEach(item => {
-          if(item == null){
-            temp.push("미기재")
-          }else {
-            temp.push(item+"");
+        Object.values(element).forEach((item,index)=> {
+          if(Object.values(element).length-1 !== index){
+            if(item == null){
+              temp.push("미기재")
+            }else {
+              temp.push(item+"");
+            }
           }
         });
         dataArray.push(temp);
@@ -114,7 +122,9 @@ export default function EqList() {
     <div>
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
-          <CustomTabs
+          <EqListTab
+            button="삭제하기"
+            selectTab={0}
             title="카테고리:"
             headerColor="primary"
             tabs={[
@@ -122,9 +132,9 @@ export default function EqList() {
                 tabName: "전체 장비",
                 tabIcon: BuildIcon,
                 tabContent: (
-                  <Table
+                  <EqListTable
                 tableHeaderColor="warning"
-                tableHead={["장비번호", "분류", "장소", "장비 현황", "프로젝트", "용도", "자산 소유", "소유주명", "입고 날짜", "반납날짜", "비고"]}
+                tableHead={["장비번호", "분류", "장소", "장비 현황", "프로젝트", "용도", "자산 소유", "소유주명", "입고 날짜", "반납날짜","상세보기","삭제"]}
                 tableData={allarray}
               />
                 )
@@ -133,9 +143,9 @@ export default function EqList() {
                 tabName: "카메라 장비",
                 tabIcon: CameraAltIcon,
                 tabContent: (
-                  <Table
+                  <EqListTable
                 tableHeaderColor="warning"
-                tableHead={["ID", "Name", "Salary", "Country"]}
+                tableHead={["장비번호", "분류", "장소", "장비 현황", "프로젝트", "용도", "자산 소유", "소유주명", "입고 날짜", "반납날짜","상세보기","삭제"]}
                 tableData={cameraarray}
               />
                 )
@@ -144,9 +154,9 @@ export default function EqList() {
                 tabName: "PC 장비",
                 tabIcon: DesktopWindowsIcon,
                 tabContent: (
-                  <Table
+                  <EqListTable
                 tableHeaderColor="warning"
-                tableHead={["ID", "Name", "Salary", "Country"]}
+                tableHead={["장비번호", "분류", "장소", "장비 현황", "프로젝트", "용도", "자산 소유", "소유주명", "입고 날짜", "반납날짜","상세보기","삭제"]}
                 tableData={pcarray}
               />
                 )
@@ -155,15 +165,15 @@ export default function EqList() {
                 tabName: "기타 장비",
                 tabIcon: ExplicitIcon,
                 tabContent: (
-                  <Table
+                  <EqListTable
                 tableHeaderColor="warning"
-                tableHead={["ID", "Name", "Salary", "Country"]}
+                tableHead={["장비번호", "분류", "장소", "장비 현황", "프로젝트", "용도", "자산 소유", "소유주명", "입고 날짜", "반납날짜","상세보기","삭제"]}
                 tableData={etcarray}
               />
                 )
               }
             ]}
-          />
+            />
         </GridItem>
       </GridContainer>
     </div>
