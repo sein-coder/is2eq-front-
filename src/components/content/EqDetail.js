@@ -65,9 +65,9 @@ export default function EqDetail() {
                     <CardBody>
                         {
                             (function() {
-                                if (dataObj.category_name === '카메라') return (<CameraDetail data={dataObj}/>);
-                                else if(dataObj.category_name === 'PC')  return (<PcDetail/>);
-                                else return (<EtcDetail/>)
+                                if (dataObj.category_idx === 1) return (<CameraDetail data={dataObj} idx = {idx}/>);
+                                else if(dataObj.category_idx === 2)  return (<PcDetail data={dataObj} idx = {idx}/>);
+                                else if(dataObj.category_idx === 3) return (<EtcDetail data={dataObj} idx = {idx}/>)
                             })()
                         }
                     </CardBody>

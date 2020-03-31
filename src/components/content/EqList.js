@@ -33,11 +33,18 @@ export default function EqList() {
       response.data.forEach(element => {
         const temp =[];
         Object.values(element).forEach((item,index)=> {
-          if(Object.values(element).length-1 !== index){
-            if(item == null || item === ""){
-              temp.push("미기재")
-            }else {
-              temp.push(item+"");
+          if(index !== 1 && index !== 3 && index !== 5 && index !== 7 && index !== 10) {
+            if(Object.values(element).length-1 !== index){
+              if(item == null || item === ""){
+                temp.push("미기재")
+              } else if(index === 13 || index === 14) {
+                const tempDate = new Date(item);
+                tempDate.setDate(tempDate.getDate()+1);
+                temp.push(tempDate.getFullYear()+"-"+(tempDate.getMonth()+1)+"-"+tempDate.getDate());
+              }
+              else {
+                temp.push(item+"");
+              }
             }
           }
         });
@@ -54,11 +61,19 @@ export default function EqList() {
       response.data.forEach(element => {
         const temp =[];
         Object.values(element).forEach((item,index)=> {
-          if(Object.values(element).length-1 !== index){
-            if(item == null){
-              temp.push("미기재")
-            }else {
-              temp.push(item+"");
+          if(index !== 1 && index !== 3 && index !== 5 && index !== 7 && index !== 10) {
+            if(Object.values(element).length-1 !== index){
+              if(item == null || item === ""){
+                temp.push("미기재")
+              } else if(index === 13 || index === 14) {
+                const tempDate = new Date(item);
+                tempDate.setDate(tempDate.getDate()+1);
+                tempDate.setMonth(tempDate.getMonth()+1);
+                temp.push(tempDate.getFullYear()+"-"+tempDate.getMonth()+"-"+tempDate.getDate());
+              }
+              else {
+                temp.push(item+"");
+              }
             }
           }
         });
@@ -76,11 +91,19 @@ export default function EqList() {
       response.data.forEach(element => {
         const temp =[];
         Object.values(element).forEach((item,index)=> {
-          if(Object.values(element).length-1 !== index){
-            if(item == null){
-              temp.push("미기재")
-            }else {
-              temp.push(item+"");
+          if(index !== 1 && index !== 3 && index !== 5 && index !== 7 && index !== 10) {
+            if(Object.values(element).length-1 !== index){
+              if(item == null || item === ""){
+                temp.push("미기재")
+              } else if(index === 13 || index === 14) {
+                const tempDate = new Date(item);
+                tempDate.setDate(tempDate.getDate()+1);
+                tempDate.setMonth(tempDate.getMonth()+1);
+                temp.push(tempDate.getFullYear()+"-"+tempDate.getMonth()+"-"+tempDate.getDate());
+              }
+              else {
+                temp.push(item+"");
+              }
             }
           }
         });
@@ -98,11 +121,19 @@ export default function EqList() {
       response.data.forEach(element => {
         const temp =[];
         Object.values(element).forEach((item,index)=> {
-          if(Object.values(element).length-1 !== index){
-            if(item == null){
-              temp.push("미기재")
-            }else {
-              temp.push(item+"");
+          if(index !== 1 && index !== 3 && index !== 5 && index !== 7 && index !== 10) {
+            if(Object.values(element).length-1 !== index){
+              if(item == null || item === ""){
+                temp.push("미기재")
+              } else if(index === 13 || index === 14) {
+                const tempDate = new Date(item);
+                tempDate.setDate(tempDate.getDate()+1);
+                tempDate.setMonth(tempDate.getMonth()+1);
+                temp.push(tempDate.getFullYear()+"-"+tempDate.getMonth()+"-"+tempDate.getDate());
+              }
+              else {
+                temp.push(item+"");
+              }
             }
           }
         });
@@ -115,7 +146,7 @@ export default function EqList() {
     })
   }, [])
 
-  
+
 
   const classes = useStyles();
   return (
@@ -123,7 +154,6 @@ export default function EqList() {
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <EqListTab
-            button="삭제하기"
             selectTab={0}
             title="카테고리:"
             headerColor="primary"

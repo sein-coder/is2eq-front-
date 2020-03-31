@@ -4,8 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-import Button from "components/CustomButtons/Button.js";
-import { Select, FormControl, FormHelperText, MenuItem, InputLabel, TextField } from '@material-ui/core';
+import {Button, Select, FormControl, FormHelperText, MenuItem, InputLabel, TextField } from '@material-ui/core';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -13,21 +12,23 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import styles from "assets/css/customInputStyle.js";
-
+import PropTypes from "prop-types";
 
 import axios from 'axios';
 
 const useStyles = makeStyles(styles);
 
-export default function EtcDetail() {
+export default function EtcDetail(props) {
   const classes = useStyles();
 
-  const [etc_ip, setEtc_ip] = React.useState('');
-  const [etc_id, setEtc_id] = React.useState('');
-  const [etc_pw, setEtc_pw] = React.useState('');
-  const [etc_mac_addr, setEtc_mac_addr] = React.useState('');
-  const [etc_brand, setEtc_brand] = React.useState('');
-  const [etc_model_name, setEtc_model_name] = React.useState('');
+  const {data,idx} = props;
+
+  const [etc_ip, setEtc_ip] = React.useState(data.etc_ip!==null?data.etc_ip:"");
+  const [etc_id, setEtc_id] = React.useState(data.etc_id!==null?data.etc_id:"");
+  const [etc_pw, setEtc_pw] = React.useState(data.etc_pw!==null?data.etc_pw:"");
+  const [etc_mac_addr, setEtc_mac_addr] = React.useState(data.etc_mac_addr!==null?data.etc_mac_addr:"");
+  const [etc_brand, setEtc_brand] = React.useState(data.etc_brand!==null?data.etc_brand:"");
+  const [etc_model_name, setEtc_model_name] = React.useState(data.etc_model_name!==null?data.etc_model_name:"");
 
   const handleChangeIp = e => {setEtc_ip(e.target.value)};
   const handleChangeId = e => {setEtc_id(e.target.value)};
@@ -36,14 +37,18 @@ export default function EtcDetail() {
   const handleChangeBrand = e => {setEtc_brand(e.target.value)};
   const handleChangeModelName = e => {setEtc_model_name(e.target.value)};
 
-  const [location, setLocation] = React.useState(1);
-  const [project, setProject] = React.useState(1);
-  const [status, setStatus] = React.useState(1);
-  const [possession, setPossession] = React.useState(5);
-  const [equip_remarks, setRemarks] = React.useState('');
-  const [owner_name, setOwner_name] = React.useState('');
-  const [received_date, setReceivedDate] = React.useState(new Date());
-  const [return_date, setReturnDate] = React.useState(new Date());
+  const [location, setLocation] = React.useState(data.location_idx);
+  const [project, setProject] = React.useState(data.project_idx);
+  const [status, setStatus] = React.useState(data.status_idx);
+  const [possession, setPossession] = React.useState(data.possession_idx);
+  const [equip_remarks, setRemarks] = React.useState(data.equip_remarks!==null?data.equip_remarks:"");
+  const [owner_name, setOwner_name] = React.useState(data.owner_name!==null?data.owner_name:"");
+
+  const receiveddate = new Date(data.received_date).setDate(new Date(data.received_date).getDate()+1);
+  const returndate = new Date(data.return_date).setDate(new Date(data.return_date).getDate()+1);
+
+  const [received_date, setReceivedDate] = React.useState(receiveddate);
+  const [return_date, setReturnDate] = React.useState(returndate);
 
   const handleChangeLocation = e => { setLocation(e.target.value); };
   const handleChangeProject = e => { setProject(e.target.value); };
@@ -58,12 +63,12 @@ export default function EtcDetail() {
   const handleOnClick = (e) => {
     e.preventDefault();
     if({etc_ip}.etc_ip !== '' && {etc_id}.etc_id !== '' && {etc_pw}.etc_pw !== ''){
-        axios.post('/equipments', {
+        axios.patch('/equipments/'+idx, {
             "category_idx" : 3,
             "location_idx" : {location}.location,
             "project_idx" : {project}.project,
             "equip_status" : {status}.status,
-            "equip_possession" : {possession}.possession + 4,
+            "equip_possession" : {possession}.possession,
             "equip_remarks" : {equip_remarks}.equip_remarks,
             "etc_ip" : {etc_ip}.etc_ip,
             "etc_id" : {etc_id}.etc_id,
@@ -302,8 +307,13 @@ export default function EtcDetail() {
                 </GridItem>
 
               </GridContainer>
-              <Button style={{marginTop: "2rem"}} color="primary" onClick={handleOnClick}>정보 수정</Button>
-              <Button style={{marginTop: "2rem", marginLeft : "2rem"}} color="primary" onClick={handleOnClick}>나가기</Button>
+              <Button style={{marginTop: "2rem", backgroundColor:"#9c27b0"}} color="primary" onClick={handleOnClick}  variant="contained">정보 수정</Button>
+              <Button style={{marginTop: "2rem", marginLeft : "2rem", backgroundColor:"#9c27b0"}} color="primary" href={"/home/eqlist/"} variant="contained">나가기</Button>
     </div>
   );
 }
+
+EtcDetail.propTypes = {
+  data : PropTypes.object,
+  idx : PropTypes.string
+};

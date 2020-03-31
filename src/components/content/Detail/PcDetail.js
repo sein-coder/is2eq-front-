@@ -4,34 +4,32 @@ import { makeStyles } from "@material-ui/core/styles";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-import Button from "components/CustomButtons/Button.js";
-import { Select, FormControl, FormHelperText, MenuItem, InputLabel, TextField } from '@material-ui/core';
+import {Button, Select, FormControl, FormHelperText, MenuItem, InputLabel, TextField } from '@material-ui/core';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import styles from "assets/css/customInputStyle.js";
-
+import PropTypes from "prop-types";
 
 import axios from 'axios';
 
 const useStyles = makeStyles(styles);
 
-export default function PcDetail() {
+export default function PcDetail(props) {
   const classes = useStyles();
 
-  const [pc_ip, setPc_ip] = React.useState('');
-  const [pc_id, setPc_id] = React.useState('');
-  const [pc_pw, setPc_pw] = React.useState('');
-  const [pc_external_ip, setPc_external_ip] = React.useState('');
-  const [pc_s_n, setPc_s_n] = React.useState('');
-  const [pc_open_port, setPc_open_port] = React.useState('');
-  const [pc_os, setPc_os] = React.useState('');
-  const [pc_hw, setPc_hw] = React.useState('');
-  const [pc_dev_tb, setPc_dev_tb] = React.useState(8);
-  const [pc_s_c, setPc_s_c] = React.useState(11);
+  const {data, idx} = props;
+
+  const [pc_ip, setPc_ip] = React.useState(data.pc_ip!==null?data.pc_ip:"");
+  const [pc_id, setPc_id] = React.useState(data.pc_id!==null?data.pc_id:"");
+  const [pc_pw, setPc_pw] = React.useState(data.pc_pw!==null?data.pc_pw:"");
+  const [pc_external_ip, setPc_external_ip] = React.useState(data.pc_external_ip!==null?data.pc_external_ip:"");
+  const [pc_s_n, setPc_s_n] = React.useState(data.pc_s_n!==null?data.pc_s_n:"");
+  const [pc_open_port, setPc_open_port] = React.useState(data.pc_open_port!==null?data.pc_open_port:"");
+  const [pc_os, setPc_os] = React.useState(data.pc_os!==null?data.pc_os:"");
+  const [pc_hw, setPc_hw] = React.useState(data.pc_hw!==null?data.pc_hw:"");
+  const [pc_dev_tb, setPc_dev_tb] = React.useState(data.pc_dev_tb_idx);
+  const [pc_s_c, setPc_s_c] = React.useState(data.pc_s_c_idx);
 
   const handleChangeIp = e => {setPc_ip(e.target.value)};
   const handleChangeId = e => {setPc_id(e.target.value)};
@@ -44,14 +42,18 @@ export default function PcDetail() {
   const handleChangeDEVTB = e => {setPc_dev_tb(e.target.value)};
   const handleChangeSC = e => {setPc_s_c(e.target.value)};
 
-  const [location, setLocation] = React.useState(1);
-  const [project, setProject] = React.useState(1);
-  const [status, setStatus] = React.useState(1);
-  const [possession, setPossession] = React.useState(5);
-  const [equip_remarks, setRemarks] = React.useState('');
-  const [owner_name, setOwner_name] = React.useState('');
-  const [received_date, setReceivedDate] = React.useState(new Date());
-  const [return_date, setReturnDate] = React.useState(new Date());
+  const [location, setLocation] = React.useState(data.location_idx);
+  const [project, setProject] = React.useState(data.project_idx);
+  const [status, setStatus] = React.useState(data.status_idx);
+  const [possession, setPossession] = React.useState(data.possession_idx);
+  const [equip_remarks, setRemarks] = React.useState(data.equip_remarks!==null?data.equip_remarks:"");
+  const [owner_name, setOwner_name] = React.useState(data.owner_name!==null?data.owner_name:"");
+
+  const receiveddate = new Date(data.received_date).setDate(new Date(data.received_date).getDate()+1);
+  const returndate = new Date(data.return_date).setDate(new Date(data.return_date).getDate()+1);
+
+  const [received_date, setReceivedDate] = React.useState(receiveddate);
+  const [return_date, setReturnDate] = React.useState(returndate);
 
   const handleChangeLocation = e => { setLocation(e.target.value); };
   const handleChangeProject = e => { setProject(e.target.value); };
@@ -66,18 +68,23 @@ export default function PcDetail() {
   const handleOnClick = (e) => {
     e.preventDefault();
     if({pc_ip}.pc_ip !== '' && {pc_id}.pc_id !== '' && {pc_pw}.pc_pw !== ''){
-        axios.post('/equipments', {
+        axios.patch('/equipments/'+idx, {
             "category_idx" : 2,
             "location_idx" : {location}.location,
             "project_idx" : {project}.project,
             "equip_status" : {status}.status,
-            "equip_possession" : {possession}.possession + 4,
+            "equip_possession" : {possession}.possession,
             "equip_remarks" : {equip_remarks}.equip_remarks,
             "pc_ip" : {pc_ip}.pc_ip,
             "pc_id" : {pc_id}.pc_id,
             "pc_pw" : {pc_pw}.pc_pw,
-
-
+            "pc_external_ip" : {pc_external_ip}.pc_external_ip,
+            "pc_s_n" : {pc_s_n}.pc_s_n,
+            "pc_open_port" : {pc_open_port}.pc_open_port,
+            "pc_os" : {pc_os}.pc_os,
+            "pc_hw" : {pc_hw}.pc_hw,
+            "pc_dev_tb" : {pc_dev_tb}.pc_dev_tb,
+            "pc_s_c" : {pc_s_c}.pc_s_c,
             "owner_name" : {owner_name}.owner_name,
             "received_date" : {received_date}.received_date,
             "return_date" : {return_date}.return_date
@@ -119,7 +126,7 @@ export default function PcDetail() {
                     autoComplete="pc_external_ip"
                   />
                 </GridItem>
-                <GridItem xs={4} sm={4} md={2}>
+                <GridItem xs={6} sm={6} md={3}>
                   <TextField
                     value = {pc_id}
                     onChange = {handleChangeId}
@@ -132,7 +139,7 @@ export default function PcDetail() {
                     autoComplete="pc_id"
                   />
                 </GridItem>
-                <GridItem xs={4} sm={4} md={2}>
+                <GridItem xs={6} sm={6} md={3}>
                   <TextField
                     value = {pc_pw}
                     onChange = {handleChangePw}
@@ -145,7 +152,7 @@ export default function PcDetail() {
                     autoComplete="pc_pw"
                   />
                 </GridItem>
-                <GridItem xs={6} sm={6} md={3}/>
+                <GridItem xs={6} sm={6} md={2}/>
                 <GridItem xs={6} sm={6} md={3}>
                   <TextField
                     value = {pc_s_n}
@@ -365,8 +372,13 @@ export default function PcDetail() {
                 </GridItem>
 
               </GridContainer>
-              <Button style={{marginTop: "2rem"}} color="primary" onClick={handleOnClick}>정보 수정</Button>
-              <Button style={{marginTop: "2rem", marginLeft : "2rem"}} color="primary" onClick={handleOnClick}>나가기</Button>
+              <Button style={{marginTop: "2rem", backgroundColor:"#9c27b0"}} color="primary" onClick={handleOnClick}  variant="contained">정보 수정</Button>
+              <Button style={{marginTop: "2rem", marginLeft : "2rem", backgroundColor:"#9c27b0"}} color="primary" href={"/home/eqlist/"} variant="contained">나가기</Button>
     </div>
   );
 }
+
+PcDetail.propTypes = {
+  data : PropTypes.object,
+  idx : PropTypes.string
+};

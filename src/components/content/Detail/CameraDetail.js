@@ -4,8 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-import Button from "components/CustomButtons/Button.js";
-import { Select, FormControl, FormHelperText, MenuItem, InputLabel, TextField } from '@material-ui/core';
+import {Button, Select, FormControl, FormHelperText, MenuItem, InputLabel, TextField } from '@material-ui/core';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -22,16 +21,14 @@ const useStyles = makeStyles(styles);
 export default function CameraDetail(props) {
   const classes = useStyles();
 
-  const {data} = props;
+  const {data, idx} = props;
 
-  console.log(data);
-
-  const [camera_ip, setCamera_ip] = React.useState(data.camera_ip);
-  const [camera_id, setCamera_id] = React.useState(data.camera_id);
-  const [camera_pw, setCamera_pw] = React.useState(data.camera_pw);
+  const [camera_ip, setCamera_ip] = React.useState(data.camera_ip!==null?data.camera_ip:"");
+  const [camera_id, setCamera_id] = React.useState(data.camera_id!==null?data.camera_id:"");
+  const [camera_pw, setCamera_pw] = React.useState(data.camera_pw!==null?data.camera_pw:"");
   const [camera_mac_addr, setCamera_mac_addr] = React.useState(data.camera_mac_addr!==null?data.camera_mac_addr:"");
-  const [camera_brand, setCamera_brand] = React.useState(data.camera_brand);
-  const [camera_model_name, setCamera_model_name] = React.useState(data.camera_model_name);
+  const [camera_brand, setCamera_brand] = React.useState(data.camera_brand!==null?data.camera_brand:"");
+  const [camera_model_name, setCamera_model_name] = React.useState(data.camera_model_name!==null?data.camera_model_name:"");
 
   const handleChangeIp = e => {setCamera_ip(e.target.value)};
   const handleChangeId = e => {setCamera_id(e.target.value)};
@@ -40,14 +37,18 @@ export default function CameraDetail(props) {
   const handleChangeBrand = e => {setCamera_brand(e.target.value)};
   const handleChangeModelName = e => {setCamera_model_name(e.target.value)};
 
-  const [location, setLocation] = React.useState(1);
-  const [project, setProject] = React.useState(1);
-  const [status, setStatus] = React.useState(1);
-  const [possession, setPossession] = React.useState(5);
-  const [equip_remarks, setRemarks] = React.useState('');
-  const [owner_name, setOwner_name] = React.useState(data.owner_name);
-  const [received_date, setReceivedDate] = React.useState(data.received_date);
-  const [return_date, setReturnDate] = React.useState(data.return_date);
+  const [location, setLocation] = React.useState(data.location_idx);
+  const [project, setProject] = React.useState(data.project_idx);
+  const [status, setStatus] = React.useState(data.status_idx);
+  const [possession, setPossession] = React.useState(data.possession_idx);
+  const [equip_remarks, setRemarks] = React.useState(data.equip_remarks!==null?data.equip_remarks:"");
+  const [owner_name, setOwner_name] = React.useState(data.owner_name!==null?data.owner_name:"");
+
+  const receiveddate = new Date(data.received_date).setDate(new Date(data.received_date).getDate()+1);
+  const returndate = new Date(data.return_date).setDate(new Date(data.return_date).getDate()+1);
+
+  const [received_date, setReceivedDate] = React.useState(receiveddate);
+  const [return_date, setReturnDate] = React.useState(returndate);
 
   const handleChangeLocation = e => { setLocation(e.target.value); };
   const handleChangeProject = e => { setProject(e.target.value); };
@@ -62,12 +63,12 @@ export default function CameraDetail(props) {
   const handleOnClick = (e) => {
     e.preventDefault();
     if({camera_ip}.camera_ip !== '' && {camera_id}.camera_id !== '' && {camera_pw}.camera_pw !== ''){
-        axios.post('/equipments', {
+        axios.patch('/equipments/'+idx, {
             "category_idx" : 1,
             "location_idx" : {location}.location,
             "project_idx" : {project}.project,
             "equip_status" : {status}.status,
-            "equip_possession" : {possession}.possession + 4,
+            "equip_possession" : {possession}.possession,
             "equip_remarks" : {equip_remarks}.equip_remarks,
             "camera_ip" : {camera_ip}.camera_ip,
             "camera_id" : {camera_id}.camera_id,
@@ -306,12 +307,13 @@ export default function CameraDetail(props) {
                 </GridItem>
 
               </GridContainer>
-              <Button style={{marginTop: "2rem"}} color="primary" onClick={handleOnClick}>정보 수정</Button>
-              <Button style={{marginTop: "2rem", marginLeft : "2rem"}} color="primary" onClick={handleOnClick}>나가기</Button>
+              <Button style={{marginTop: "2rem", backgroundColor:"#9c27b0"}} color="primary" onClick={handleOnClick}  variant="contained">정보 수정</Button>
+              <Button style={{marginTop: "2rem", marginLeft : "2rem", backgroundColor:"#9c27b0"}} color="primary" href={"/home/eqlist/"} variant="contained">나가기</Button>
     </div>
   );
 }
 
 CameraDetail.propTypes = {
-  data : PropTypes.object
+  data : PropTypes.object,
+  idx : PropTypes.string
 };

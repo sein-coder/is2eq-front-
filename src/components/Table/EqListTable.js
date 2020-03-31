@@ -2,10 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 // @material-ui/core components
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import {Button, Checkbox, Table, TableHead, TableRow, TableBody, TableCell} from "@material-ui/core";
+import {Button, Checkbox, Table, TableHead, TableRow, TableBody, TableCell, Box} from "@material-ui/core";
 // core components
 import styles from "assets/css/tableStyle.js";
 import { blackColor } from "assets/css/react";
+
+import axios from 'axios';
 
 const useStyles = makeStyles(styles);
 
@@ -17,11 +19,36 @@ const CustomCheckbox = withStyles({
       },
     },
     checked: {},
-  })((props) => <Checkbox color="default" {...props} />);
+  })((props) => <Checkbox color="default" {...props}/>);
+
+
 
 export default function EqListTable(props) {
   const classes = useStyles();
-  const { tableHead, tableData, tableHeaderColor } = props;
+  const { tableHead, tableData, tableHeaderColor} = props;
+  const [checklist, setList] = React.useState('');
+
+  const handleOnChecked = e => {
+    if(e.target.checked === true){
+      setList(checklist+","+e.target.id);
+    }else {
+      setList(checklist.replace(','+e.target.id,""));
+    }
+    console.log(checklist);
+  }
+
+  const handleOnClick = e => {
+    console.log("삭제?");
+    axios.delete("/equipments?idxs="+checklist)
+      .then(function(response){
+        console.log(response.data);
+        window.location.reload();
+      })
+      .catch(function(error){
+        console.log(error);
+      })
+  }
+
   return (
     <div className={classes.tableResponsive}>
       <Table className={classes.table}>
@@ -62,13 +89,21 @@ export default function EqListTable(props) {
                     </Button>
                 </TableCell>
                 <TableCell className={classes.tableCell}>
-                    <CustomCheckbox color="primary"></CustomCheckbox>
+                    <CustomCheckbox color="primary" id={prop[0]} onChange={handleOnChecked}></CustomCheckbox>
                 </TableCell>
               </TableRow>
             );
           })}
         </TableBody>
       </Table>
+      <Box style={{width:"99%"}} display="flex" flexDirection="row-reverse" p={1} m={1}>
+          <Box p={1}>
+            <Button style={{backgroundColor:"#9c27b0" }}
+            color="primary"
+            onClick={handleOnClick}
+            variant="contained">삭제하기</Button>
+          </Box>
+      </Box>
     </div>
   );
 }
