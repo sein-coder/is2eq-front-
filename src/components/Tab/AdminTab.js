@@ -16,19 +16,20 @@ import styles from "assets/css/customTabsStyle.js";
 
 const useStyles = makeStyles(styles);
 
-export default function CustomTabs(props) {
+export default function AdminTab(props) {
   const classes = useStyles();
-  const { headerColor, plainTabs, tabs, title, rtlActive, selectTab } = props;
+  const { headerColor, plainTabs, tabs, title, rtlActive, selectTab} = props;
   const cardTitle = classNames({
     [classes.cardTitle]: true,
     [classes.cardTitleRTL]: rtlActive
   });
 
+
   const [value, setValue] = React.useState(selectTab);
   const handleChange = (event, value) => {
     setValue(value);
+    
   };
-
   return (
     <Card plain={plainTabs}>
       <CardHeader color={headerColor} plain={plainTabs}>
@@ -78,8 +79,8 @@ export default function CustomTabs(props) {
   );
 }
 
-CustomTabs.propTypes = {
-  selectTab : PropTypes.func,
+AdminTab.propTypes = {
+  selectTab : PropTypes.number,
   headerColor: PropTypes.oneOf([
     "warning",
     "success",

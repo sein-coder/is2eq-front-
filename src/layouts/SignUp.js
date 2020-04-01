@@ -72,7 +72,7 @@ export default function SignUp() {
   
   const handleClick = e => {
     e.preventDefault();
-    axios.post('/users/', {
+    axios.post('/users', {
       "user_id" : {id}.id,
       "user_pw" : {pw}.pw,
       "user_name" : {name}.name,
@@ -81,7 +81,6 @@ export default function SignUp() {
       "user_team" : {team}.team,
       "user_gender" : {gender}.gender
     }).then( respose => {
-      console.log(respose.data);
       if(respose.data > 0){
           alert("회원가입 성공");
           window.location.href = "/signin";
@@ -187,8 +186,8 @@ export default function SignUp() {
                           value={team}
                           onChange={handleChangeTeam}
                           >
-                          <MenuItem value={"IOT SOLUTION 1 TEAM"}>IOT 솔루션 1팀</MenuItem>
-                          <MenuItem value={"IOT SOLUTION 2 TEAM"}>IOT 솔루션 2팀</MenuItem>
+                          <MenuItem value={"Iot Solution 1 team"}>IOT 솔루션 1팀</MenuItem>
+                          <MenuItem value={"Iot Solution 2 team"}>IOT 솔루션 2팀</MenuItem>
                           </Select>
                           <FormHelperText>근무하고 있는 팀을 선택해주세요</FormHelperText>
                       </FormControl>
@@ -198,13 +197,13 @@ export default function SignUp() {
                           <FormLabel component="legend" style={{display:"inline", marginBottom:"15px"}}>성별</FormLabel>
                           <RadioGroup row aria-label="position" name="position" defaultValue="top" value={gender} onChange={handleChange}>
                               <FormControlLabel
-                              value="m"
+                              value="M"
                               control={<Radio color="primary" />}
                               label="남자"
                               labelPlacement="top"
                               />
                               <FormControlLabel
-                              value="f"
+                              value="F"
                               control={<Radio color="primary" />}
                               label="여자"
                               labelPlacement="top"
@@ -216,7 +215,6 @@ export default function SignUp() {
           </form>
           <Button
             type="submit"
-            href="#"
             onClick={handleClick}
             fullWidth
             variant="contained"

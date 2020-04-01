@@ -3,13 +3,15 @@ import {Link} from 'react-router-dom';
 import PropTypes from "prop-types";
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import {CssBaseline, Drawer, AppBar, Toolbar, Typography, Divider, IconButton, Badge } from '@material-ui/core';
+import {CssBaseline, Drawer, AppBar, Toolbar, Typography, Divider, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import SideBar from 'components/SideBar.js';
 import HomeIcon from '@material-ui/icons/Home';
 import bgImg from 'assets/img/sidebar-2.jpg';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+
+import axios from 'axios';
 
 const drawerWidth = 240;
 
@@ -97,9 +99,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function NavBar(props) {
 
-    const {
-      themeName
-    } = props
+    const { themeName, loginUser} = props
 
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
@@ -109,6 +109,16 @@ export default function NavBar(props) {
     const handleDrawerClose = () => {
         setOpen(false);
     };
+
+    const handleOnClick = e => {
+      axios.get("/users/logout")
+      .then((response)=> {
+        window.location.reload();
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
+    }
 
     return (
       <div className={classes.root}>
@@ -127,10 +137,9 @@ export default function NavBar(props) {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             {themeName}
           </Typography>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
+          <IconButton color="inherit" onClick={handleOnClick}>
+            Logout
+            <ExitToAppIcon/>
           </IconButton>
         </Toolbar>
       </AppBar>
@@ -142,7 +151,7 @@ export default function NavBar(props) {
         open={open}
       >
         <div className={classes.toolbarIcon}>
-          <Link className={classes.cardCategory} style={{textDecoration:"none", fontSize:"10px", marginRight:"1.5rem"}} to="/">
+          <Link className={classes.cardCategory} style={{textDecoration:"none", fontSize:"10px", marginRight:"1.5rem"}} to="/home">
             <IconButton style={{marginLeft:"0", marginRight:"auto", borderRadius:"0%"}}>
               <HomeIcon style={{marginRight:"1.5rem"}}/>
               IS 2 EQ
@@ -153,7 +162,7 @@ export default function NavBar(props) {
           </IconButton>
         </div>
         <Divider />
-        <SideBar/>
+        <SideBar loginUser = {loginUser}/>
       </Drawer>
       </div>
     );
@@ -161,4 +170,5 @@ export default function NavBar(props) {
 
 NavBar.propTypes = {
   themeName: PropTypes.string,
+  loginUser : PropTypes.number
 };

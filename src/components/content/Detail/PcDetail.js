@@ -89,9 +89,14 @@ export default function PcDetail(props) {
             "received_date" : {received_date}.received_date,
             "return_date" : {return_date}.return_date
         }).then(response => {
-            console.log(response.data);
+          if(response.data > 0) {
+            alert("정보 수정 성공");
+            window.location.reload();
+          }else {
+            alert("정보 수정 실패");
+          }
         }).catch(error => {
-            console.log(error);
+          alert("정보 수정 실패");
         });
     } else {
         alert('필수 항목을 채워주세요');

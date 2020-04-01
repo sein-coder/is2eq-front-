@@ -1,51 +1,24 @@
 import React from "react";
 import PropTypes from "prop-types";
 // @material-ui/core components
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import {Button, Checkbox, Table, TableHead, TableRow, TableBody, TableCell, Box} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import {Button, Table, TableHead, TableRow, TableBody, TableCell} from "@material-ui/core";
 // core components
 import styles from "assets/css/tableStyle.js";
-import { blackColor } from "assets/css/react";
 
 import axios from 'axios';
 
 const useStyles = makeStyles(styles);
 
-const CustomCheckbox = withStyles({
-    root: {
-      color: blackColor,
-      '&$checked': {
-        color: "#9c27b0",
-      },
-    },
-    checked: {},
-  })((props) => <Checkbox color="default" {...props}/>);
-
-
-
-export default function EqListTable(props) {
+export default function AdminOkTable(props) {
   const classes = useStyles();
   const { tableHead, tableData, tableHeaderColor} = props;
-  const [checklist, setList] = React.useState('');
-
-  const handleOnChecked = e => {
-    if(e.target.checked === true){
-      setList(checklist+","+e.target.id);
-    }else {
-      setList(checklist.replace(','+e.target.id,""));
-    }
-    console.log(checklist);
-  }
 
   const handleOnClick = e => {
-    console.log("삭제?");
-    console.log(checklist);
-    axios.delete("/equipments?idxs="+checklist)
+    console.log();
+    axios.patch("/admin/ok/"+e.currentTarget.id)
       .then(function(response){
-        if(response.data > 0){
-          alert("삭제 성공");
-          window.location.reload();
-        }
+        window.location.reload();
       })
       .catch(function(error){
         console.log(error);
@@ -82,40 +55,30 @@ export default function EqListTable(props) {
                     </TableCell>
                   );
                 })}
-                 <TableCell className={classes.tableCell}>
+                <TableCell className={classes.tableCell}>
                     <Button
+                        id={prop[0]}
                         style={{backgroundColor:"#9c27b0" }}
                         color="primary"
-                        href={"/home/equipments/"+prop[0]}
+                        onClick={handleOnClick}
                         variant="contained"
-                        >상세보기
+                        >승인하기
                     </Button>
-                </TableCell>
-                <TableCell className={classes.tableCell}>
-                    <CustomCheckbox color="primary" id={prop[0]} onChange={handleOnChecked}></CustomCheckbox>
                 </TableCell>
               </TableRow>
             );
           })}
         </TableBody>
       </Table>
-      <Box style={{width:"99%"}} display="flex" flexDirection="row-reverse" p={1} m={1}>
-          <Box p={1}>
-            <Button style={{backgroundColor:"#9c27b0" }}
-            color="primary"
-            onClick={handleOnClick}
-            variant="contained">삭제하기</Button>
-          </Box>
-      </Box>
     </div>
   );
 }
 
-EqListTable.defaultProps = {
+AdminOkTable.defaultProps = {
   tableHeaderColor: "gray"
 };
 
-EqListTable.propTypes = {
+AdminOkTable.propTypes = {
   tableHeaderColor: PropTypes.oneOf([
     "warning",
     "primary",

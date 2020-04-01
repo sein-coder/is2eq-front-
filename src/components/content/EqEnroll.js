@@ -36,8 +36,16 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 export default function EqEnroll(props) {
-
-  const {selectTab} = props;
+  const handleSelectTab = () => {
+    switch ({props}.props.match.params.id) {
+      case "pc":
+        return 1;
+      case "etc":
+        return 2;
+      default:
+        return 0;
+    }
+  }
 
   const classes = useStyles();
   return (
@@ -45,7 +53,7 @@ export default function EqEnroll(props) {
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <CustomTabs
-            selectTab = {selectTab}
+            selectTab = {handleSelectTab}
             title="카테고리:"
             headerColor="primary"
             tabs={[

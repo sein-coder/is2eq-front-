@@ -23,7 +23,7 @@ const CustomCheckbox = withStyles({
 
 
 
-export default function EqListTable(props) {
+export default function AdminTable(props) {
   const classes = useStyles();
   const { tableHead, tableData, tableHeaderColor} = props;
   const [checklist, setList] = React.useState('');
@@ -38,14 +38,10 @@ export default function EqListTable(props) {
   }
 
   const handleOnClick = e => {
-    console.log("삭제?");
-    console.log(checklist);
-    axios.delete("/equipments?idxs="+checklist)
+    axios.delete("/admin/users?idxs="+checklist)
       .then(function(response){
-        if(response.data > 0){
-          alert("삭제 성공");
-          window.location.reload();
-        }
+        console.log(response.data);
+        window.location.reload();
       })
       .catch(function(error){
         console.log(error);
@@ -82,15 +78,6 @@ export default function EqListTable(props) {
                     </TableCell>
                   );
                 })}
-                 <TableCell className={classes.tableCell}>
-                    <Button
-                        style={{backgroundColor:"#9c27b0" }}
-                        color="primary"
-                        href={"/home/equipments/"+prop[0]}
-                        variant="contained"
-                        >상세보기
-                    </Button>
-                </TableCell>
                 <TableCell className={classes.tableCell}>
                     <CustomCheckbox color="primary" id={prop[0]} onChange={handleOnChecked}></CustomCheckbox>
                 </TableCell>
@@ -104,18 +91,18 @@ export default function EqListTable(props) {
             <Button style={{backgroundColor:"#9c27b0" }}
             color="primary"
             onClick={handleOnClick}
-            variant="contained">삭제하기</Button>
+            variant="contained">탈퇴시키기</Button>
           </Box>
       </Box>
     </div>
   );
 }
 
-EqListTable.defaultProps = {
+AdminTable.defaultProps = {
   tableHeaderColor: "gray"
 };
 
-EqListTable.propTypes = {
+AdminTable.propTypes = {
   tableHeaderColor: PropTypes.oneOf([
     "warning",
     "primary",

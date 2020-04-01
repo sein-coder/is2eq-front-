@@ -42,8 +42,8 @@ export default function EtcEnroll() {
   const [possession, setPossession] = React.useState(5);
   const [equip_remarks, setRemarks] = React.useState('');
   const [owner_name, setOwner_name] = React.useState('');
-  const [received_date, setReceivedDate] = React.useState(new Date());
-  const [return_date, setReturnDate] = React.useState(new Date());
+  const [received_date, setReceivedDate] = React.useState(null);
+  const [return_date, setReturnDate] = React.useState(null);
 
   const handleChangeLocation = e => { setLocation(e.target.value); };
   const handleChangeProject = e => { setProject(e.target.value); };
@@ -75,9 +75,14 @@ export default function EtcEnroll() {
             "received_date" : {received_date}.received_date,
             "return_date" : {return_date}.return_date
         }).then(response => {
-            console.log(response.data);
+          if(response.data > 0) {
+            alert("등록 성공");
+            window.location.reload();
+          }else {
+            alert("등록 실패");
+          }
         }).catch(error => {
-            console.log(error);
+          alert("등록 실패");
         });
     } else {
         alert('필수 항목을 채워주세요');

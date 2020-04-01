@@ -14,7 +14,6 @@ import Warning from "@material-ui/icons/Warning";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Table from "components/Table/Table.js";
-import CustomTabs from "components/Tab/CustomTabs.js";
 import Danger from "components/Typography/Danger.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
@@ -33,6 +32,10 @@ export default function Dashboard() {
   const [cam, setCam] = React.useState(0);
   const [pc, setPc] = React.useState(0);
   const [etc, setEtc] = React.useState(0);
+
+  const [eqlogs, setEqlogs ] = React.useState([]);
+  const [userlogs, setUserlogs] = React.useState([]);
+
   useEffect(() => {
     axios.get('/equipments')
     .then(function(response){
@@ -64,6 +67,47 @@ export default function Dashboard() {
     .catch(function(error){
       console.log(error);
     })
+
+    axios.get('/equipments/log')
+    .then(function(response){
+      const dataArray = [];
+      response.data.forEach((element,index) => {
+        if(index < 8) {
+          const temp =[];
+          Object.values(element).forEach((item,index)=> {
+            if(index !== 0) {
+              temp.push(item+"");
+            }
+          });
+          dataArray.push(temp);
+        }
+      });
+      setEqlogs(dataArray);
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+
+    axios.get('/users/log')
+    .then(function(response){
+      const dataArray = [];
+      response.data.forEach((element,index) => {
+        if(index < 8) {
+          const temp =[];
+          Object.values(element).forEach((item,index)=> {
+            if(index !== 0) {
+              temp.push(item+"");
+            }
+          });
+          dataArray.push(temp);
+        }
+      });
+      setUserlogs(dataArray);
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+
   }, [])
 
   const classes = useStyles();
@@ -86,7 +130,7 @@ export default function Dashboard() {
                 <Danger>
                   <Warning />
                 </Danger>
-                <Link to="/home/eqenroll">
+                <Link to="/home/eqenroll/all" >
                   장비 등록
                 </Link>
               </div>
@@ -109,7 +153,7 @@ export default function Dashboard() {
                 <Danger>
                   <Warning />
                 </Danger>
-                <Link to="/home/eqenroll">
+                <Link to="/home/eqenroll/camera">
                   카메라 장비 등록
                 </Link>
               </div>
@@ -132,7 +176,7 @@ export default function Dashboard() {
                 <Danger>
                   <Warning />
                 </Danger>
-                <Link to="/home/eqenroll">
+                <Link to="/home/eqenroll/pc">
                   PC 장비 등록
                 </Link>
               </div>
@@ -155,7 +199,7 @@ export default function Dashboard() {
                 <Danger>
                   <Warning />
                 </Danger>
-                <Link to="/home/eqenroll">
+                <Link to="/home/eqenroll/etc">
                   기타 장비 등록
                 </Link>
               </div>
@@ -166,96 +210,29 @@ export default function Dashboard() {
      
       <GridContainer>
         <GridItem xs={12} sm={12} md={6}>
-          <CustomTabs
-            selectTab={0}
-            title="변경사항:"
-            headerColor="primary"
-            tabs={[
-              {
-                tabName: "전체 장비",
-                tabIcon: BuildIcon,
-                tabContent: (
-                  <Table
-                tableHeaderColor="warning"
-                tableHead={["ID", "Name", "Salary", "Country"]}
-                tableData={[
-                  ["1", "Dakota Rice", "$36,738", "Niger" ],
-                  ["2", "Minerva Hooper", "$23,789", "Curaçao"],
-                  ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
-                  ["4", "Philip Chaney", "$38,735", "Korea, South"]
-                ]}
-              />
-                )
-              },
-              {
-                tabName: "카메라 장비",
-                tabIcon: CameraAltIcon,
-                tabContent: (
-                  <Table
-                tableHeaderColor="warning"
-                tableHead={["ID", "Name", "Salary", "Country"]}
-                tableData={[
-                  ["1", "Dakota Rice", "$36,738", "Niger"],
-                  ["2", "Minerva Hooper", "$23,789", "Curaçao"],
-                  ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
-                  ["4", "Philip Chaney", "$38,735", "Korea, South"]
-                ]}
-              />
-                )
-              },
-              {
-                tabName: "PC 장비",
-                tabIcon: DesktopWindowsIcon,
-                tabContent: (
-                  <Table
-                tableHeaderColor="warning"
-                tableHead={["ID", "Name", "Salary", "Country"]}
-                tableData={[
-                  ["1", "Dakota Rice", "$36,738", "Niger"],
-                  ["2", "Minerva Hooper", "$23,789", "Curaçao"],
-                  ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
-                  ["4", "Philip Chaney", "$38,735", "Korea, South"]
-                ]}
-              />
-                )
-              },
-              {
-                tabName: "기타 장비",
-                tabIcon: ExplicitIcon,
-                tabContent: (
-                  <Table
-                tableHeaderColor="warning"
-                tableHead={["ID", "Name", "Salary", "Country"]}
-                tableData={[
-                  ["1", "Dakota Rice", "$36,738", "Niger"],
-                  ["2", "Minerva Hooper", "$23,789", "Curaçao"],
-                  ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
-                  ["4", "Philip Chaney", "$38,735", "Korea, South"]
-                ]}
-              />
-                )
-              }
-            ]}
-          />
+          <Card>
+              <CardHeader color="primary">
+                <h4 className={classes.cardTitleWhite}>최근 장비 요청 로그</h4>
+              </CardHeader>
+              <CardBody>
+                <Table
+                  tableHeaderColor="warning"
+                  tableHead={["장비번호", "요청 메소드", "요청 시기"]}
+                  tableData={eqlogs}
+                />
+              </CardBody>
+          </Card>
         </GridItem>
         <GridItem xs={12} sm={12} md={6}>
           <Card>
             <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>Employees Stats</h4>
-              <p className={classes.cardCategoryWhite}>
-                New employees on 15th September, 2016
-              </p>
+              <h4 className={classes.cardTitleWhite}>최근 로그인 로그</h4>
             </CardHeader>
             <CardBody>
               <Table
                 tableHeaderColor="warning"
                 tableHead={["ID", "Name", "Salary", "Country"]}
-                tableData={[
-                  ["1", "Dakota Rice", "$36,738", "Niger"],
-                  ["2", "Minerva Hooper", "$23,789", "Curaçao"],
-                  ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
-                  ["4", "Philip Chaney", "$38,735", "Korea, South"]
-                ]}
+                tableData={userlogs}
               />
             </CardBody>
           </Card>

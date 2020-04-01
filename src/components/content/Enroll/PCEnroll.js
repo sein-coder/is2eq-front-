@@ -50,8 +50,8 @@ export default function PcEnroll() {
   const [possession, setPossession] = React.useState(5);
   const [equip_remarks, setRemarks] = React.useState('');
   const [owner_name, setOwner_name] = React.useState('');
-  const [received_date, setReceivedDate] = React.useState(new Date());
-  const [return_date, setReturnDate] = React.useState(new Date());
+  const [received_date, setReceivedDate] = React.useState(null);
+  const [return_date, setReturnDate] = React.useState(null);
 
   const handleChangeLocation = e => { setLocation(e.target.value); };
   const handleChangeProject = e => { setProject(e.target.value); };
@@ -67,24 +67,34 @@ export default function PcEnroll() {
     e.preventDefault();
     if({pc_ip}.pc_ip !== '' && {pc_id}.pc_id !== '' && {pc_pw}.pc_pw !== ''){
         axios.post('/equipments', {
-            "category_idx" : 2,
-            "location_idx" : {location}.location,
-            "project_idx" : {project}.project,
-            "equip_status" : {status}.status,
-            "equip_possession" : {possession}.possession + 4,
-            "equip_remarks" : {equip_remarks}.equip_remarks,
-            "pc_ip" : {pc_ip}.pc_ip,
-            "pc_id" : {pc_id}.pc_id,
-            "pc_pw" : {pc_pw}.pc_pw,
-
-
-            "owner_name" : {owner_name}.owner_name,
-            "received_date" : {received_date}.received_date,
-            "return_date" : {return_date}.return_date
+          "category_idx" : 2,
+          "location_idx" : {location}.location,
+          "project_idx" : {project}.project,
+          "equip_status" : {status}.status,
+          "equip_possession" : {possession}.possession,
+          "equip_remarks" : {equip_remarks}.equip_remarks,
+          "pc_ip" : {pc_ip}.pc_ip,
+          "pc_id" : {pc_id}.pc_id,
+          "pc_pw" : {pc_pw}.pc_pw,
+          "pc_external_ip" : {pc_external_ip}.pc_external_ip,
+          "pc_s_n" : {pc_s_n}.pc_s_n,
+          "pc_open_port" : {pc_open_port}.pc_open_port,
+          "pc_os" : {pc_os}.pc_os,
+          "pc_hw" : {pc_hw}.pc_hw,
+          "pc_dev_tb" : {pc_dev_tb}.pc_dev_tb,
+          "pc_s_c" : {pc_s_c}.pc_s_c,
+          "owner_name" : {owner_name}.owner_name,
+          "received_date" : {received_date}.received_date,
+          "return_date" : {return_date}.return_date
         }).then(response => {
-            console.log(response.data);
+          if(response.data > 0) {
+            alert("등록 성공");
+            window.location.reload();
+          }else {
+            alert("등록 실패");
+          }
         }).catch(error => {
-            console.log(error);
+          alert("등록 실패");
         });
     } else {
         alert('필수 항목을 채워주세요');

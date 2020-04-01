@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import PropTypes from "prop-types";
 import { makeStyles } from '@material-ui/core/styles';
 import {ListItem, ListItemIcon, ListItemText, List, Collapse} from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
@@ -22,10 +23,12 @@ const useStyles = makeStyles(theme => ({
     },
   }));
 
-export default function SideBar() {
+export default function SideBar(props) {
     const classes = useStyles();
     const [openEq, setOpenEq] = React.useState(true);
     const [openUser, setOpenUser] = React.useState(true);
+
+    const {loginUser} = props;
 
     const handleClickEq = () => {
         setOpenEq(!openEq);
@@ -60,7 +63,7 @@ export default function SideBar() {
                     </ListItemIcon>
                     <ListItemText primary="장비 리스트" />
                 </ListItem>
-                <ListItem button className={classes.nested} component={Link} to="/home/eqenroll">
+                <ListItem button className={classes.nested} component={Link} to="/home/eqenroll/all">
                     <ListItemIcon>
                     <AddBoxIcon />
                     </ListItemIcon>
@@ -69,23 +72,47 @@ export default function SideBar() {
                 </List>
             </Collapse>
 
-            <ListItem button onClick={handleClickUser}>
-            <ListItemIcon>
-                <PeopleIcon />
-            </ListItemIcon>
-            <ListItemText primary="유저" />
-            {openUser ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
-            <Collapse in={openUser} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                <ListItem button className={classes.nested} component={Link} to="/home/profile">
+
+            {
+              (function() {
+                  if(loginUser === -1) 
+                    return (            
+                    <ListItem button component={Link} to="/home/admin" >
                     <ListItemIcon>
-                    <PersonIcon />
+                        <PeopleIcon />
                     </ListItemIcon>
-                    <ListItemText primary="유저 프로필" />
-                </ListItem>
-                </List>
-            </Collapse>
+                    <ListItemText primary="Admin" />
+                    </ListItem>);
+                  else {
+                    return (            
+                    <div>
+                    <ListItem button onClick={handleClickUser}>
+                        <ListItemIcon>
+                            <PeopleIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="유저" />
+                        {openUser ? <ExpandLess /> : <ExpandMore />}
+                        </ListItem>
+                    <Collapse in={openUser} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                        <ListItem button className={classes.nested} component={Link} to="/home/profile">
+                            <ListItemIcon>
+                            <PersonIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="유저 프로필" />
+                        </ListItem>
+                        </List>
+                    </Collapse>
+                    </div>
+                        );
+                  }  
+              })()
+          }
+
         </div>
     );
 };
+
+SideBar.propTypes = {
+    loginUser : PropTypes.number,
+  };

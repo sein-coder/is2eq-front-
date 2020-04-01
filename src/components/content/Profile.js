@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -37,6 +37,7 @@ const useStyles = makeStyles(styles);
 export default function UserProfile() {
   const classes = useStyles();
 
+  const [idx, setIdx] = React.useState(0);
   const [gender, setGender] = React.useState('');
   const [id,setId] = React.useState('');
   const [pw,setPw] = React.useState('');
@@ -53,9 +54,29 @@ export default function UserProfile() {
   const handleChangeEmail = e => { setEmail(e.target.value) };
   const handleChangeTeam = e => { setTeam(e.target.value) };
   
+  useEffect(() => {
+    axios.get('/users/login')
+    .then(function(response){
+      if(response.data !== "") {
+        setIdx(response.data.user_idx);
+        setId(response.data.user_id);
+        setPw(response.data.user_pw);
+        setName(response.data.user_name);
+        setPhone(response.data.user_phone);
+        setEmail(response.data.user_email);
+        setTeam(response.data.user_team);
+        setGender(response.data.user_gender);
+      }
+    })
+    .catch(function(error){
+      console.log(error);
+    })
+  },[]);
+
+
   const handleOnClick = e => {
     e.preventDefault();
-    axios.patch('/users/', {
+    axios.patch('/users/'+idx, {
       "user_id" : {id}.id,
       "user_pw" : {pw}.pw,
       "user_name" : {name}.name,
@@ -64,13 +85,12 @@ export default function UserProfile() {
       "user_team" : {team}.team,
       "user_gender" : {gender}.gender
     }).then( respose => {
-      console.log(respose.data);
       if(respose.data > 0){
-          alert("회원가입 성공");
-          window.location.href = "/signin";
+          alert("프로필 수정 성공");
       }
     }).catch( error => {
-      console.log("회원가입 실패");
+      console.log(error);
+      alert("프로필 수정 실패");
     })
   }
 
@@ -99,6 +119,7 @@ export default function UserProfile() {
                 </GridItem>
                 <GridItem xs={6} sm={6} md={3}>
                     <TextField
+                        type="password"
                         value={pw}
                         onChange={handleChangePw}
                         margin="normal"
@@ -159,8 +180,8 @@ export default function UserProfile() {
                           value={team}
                           onChange={handleChangeTeam}
                           >
-                          <MenuItem value={"IOT SOLUTION 1 TEAM"}>IOT 솔루션 1팀</MenuItem>
-                          <MenuItem value={"IOT SOLUTION 2 TEAM"}>IOT 솔루션 2팀</MenuItem>
+                          <MenuItem value={"Iot Solution 1 team"}>IOT 솔루션 1팀</MenuItem>
+                          <MenuItem value={"Iot Solution 2 team"}>IOT 솔루션 2팀</MenuItem>
                           </Select>
                           <FormHelperText>근무하고 있는 팀을 선택해주세요</FormHelperText>
                       </FormControl>
@@ -170,13 +191,13 @@ export default function UserProfile() {
                           <FormLabel component="legend" style={{display:"inline", marginBottom:"15px"}}>성별</FormLabel>
                           <RadioGroup row aria-label="position" name="position" defaultValue="top" value={gender} onChange={handleChange}>
                               <FormControlLabel
-                              value="m"
+                              value="M"
                               control={<Radio color="primary" />}
                               label="남자"
                               labelPlacement="top"
                               />
                               <FormControlLabel
-                              value="f"
+                              value="F"
                               control={<Radio color="primary" />}
                               label="여자"
                               labelPlacement="top"
