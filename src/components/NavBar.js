@@ -8,7 +8,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import SideBar from 'components/SideBar.js';
 import HomeIcon from '@material-ui/icons/Home';
-import bgImg from 'assets/img/sidebar-2.jpg';
+import bgImg from 'assets/img/cover.jpg';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import axios from 'axios';

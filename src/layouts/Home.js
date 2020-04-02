@@ -76,7 +76,6 @@ export default function Home() {
 
     axios.get('/users/login')
     .then(function(response){
-      console.log(response);
       if(response.data === "") {
         const temp = {user_idx : 0}
         setLoginUser(temp);

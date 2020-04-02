@@ -9,7 +9,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import { TextField, Button, Select, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, FormHelperText
-  , MenuItem, InputLabel, } from '@material-ui/core';
+  , MenuItem, InputLabel, Box} from '@material-ui/core';
 
 import axios from 'axios';
 
@@ -94,6 +94,25 @@ export default function UserProfile() {
     })
   }
 
+  const handleOnClick2 = e => {
+    e.preventDefault();
+    if(window.confirm("정말 탈퇴하시겠습니까?")) {
+      axios.delete('/users/'+idx)
+      .then( respose => {
+        if(respose.data > 0){
+            alert("탈퇴 성공");
+            window.location.reload();
+        }
+      }).catch( error => {
+        console.log(error);
+        alert("탈퇴 실패");
+      })
+    }
+    else {
+      console.log("false");
+    }
+  }
+
   return (
     <div>
       <GridContainer>
@@ -115,6 +134,7 @@ export default function UserProfile() {
                         label="아이디"
                         name="id"
                         autoComplete="id"
+                        disabled
                     />
                 </GridItem>
                 <GridItem xs={6} sm={6} md={3}>
@@ -208,7 +228,13 @@ export default function UserProfile() {
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button style={{backgroundColor:"#9c27b0", color:"white"}} color="primary" onClick={handleOnClick}>프로필 수정</Button>
+            <Box style={{width:"100%"}} display="flex" flexDirection="row" p={1} m={1}>
+                <Box p={1}>
+                <Button style={{backgroundColor:"#9c27b0", color:"white"}} color="primary" onClick={handleOnClick}>프로필 수정</Button>
+              <Button style={{backgroundColor:"#9c27b0", color:"white", marginLeft:"2rem"}} color="primary" onClick={handleOnClick2}>회원 탈퇴</Button>
+                </Box>
+            </Box>
+
             </CardFooter>
           </Card>
         </GridItem>

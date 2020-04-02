@@ -34,13 +34,12 @@ export default function AdminTable(props) {
     }else {
       setList(checklist.replace(','+e.target.id,""));
     }
-    console.log(checklist);
   }
 
   const handleOnClick = e => {
     axios.delete("/admin/users?idxs="+checklist)
       .then(function(response){
-        console.log(response.data);
+        alert("탈퇴 성공");
         window.location.reload();
       })
       .catch(function(error){

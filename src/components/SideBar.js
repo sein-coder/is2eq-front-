@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from "prop-types";
 import { makeStyles } from '@material-ui/core/styles';
-import {ListItem, ListItemIcon, ListItemText, List, Collapse} from '@material-ui/core';
+import {ListItem, ListItemIcon, ListItemText, List, Collapse, Divider} from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import BuildIcon from '@material-ui/icons/Build';
@@ -47,7 +47,7 @@ export default function SideBar(props) {
             </ListItemIcon>
             <ListItemText primary="현황"/>
             </ListItem>
-
+            <Divider />
             <ListItem button onClick={handleClickEq}>
             <ListItemIcon>
                 <BuildIcon />
@@ -71,8 +71,7 @@ export default function SideBar(props) {
                 </ListItem>
                 </List>
             </Collapse>
-
-
+            <Divider />
             {
               (function() {
                   if(loginUser === -1) 
@@ -108,7 +107,7 @@ export default function SideBar(props) {
                   }  
               })()
           }
-
+          <Divider />
         </div>
     );
 };

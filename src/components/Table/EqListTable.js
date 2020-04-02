@@ -34,22 +34,24 @@ export default function EqListTable(props) {
     }else {
       setList(checklist.replace(','+e.target.id,""));
     }
-    console.log(checklist);
   }
 
   const handleOnClick = e => {
-    console.log("삭제?");
-    console.log(checklist);
-    axios.delete("/equipments?idxs="+checklist)
-      .then(function(response){
-        if(response.data > 0){
-          alert("삭제 성공");
-          window.location.reload();
-        }
-      })
-      .catch(function(error){
-        console.log(error);
-      })
+    if(window.confirm("정말 삭제하시겠습니까?")) {
+      axios.delete("/equipments?idxs="+checklist)
+        .then(function(response){
+
+            if(response.data > 0){
+              alert("삭제 성공");
+              window.location.reload();
+            }
+        })
+        .catch(function(error){
+          console.log(error);
+        })
+    } else {
+      return;
+    }
   }
 
   return (

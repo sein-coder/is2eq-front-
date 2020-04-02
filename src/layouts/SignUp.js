@@ -9,7 +9,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import bgImg from 'assets/img/cover.jpeg';
+import bgImg from "assets/img/cover.jpg";
 
 import axios from 'axios';
 
@@ -92,7 +92,7 @@ export default function SignUp() {
 
   return (
     <div className={classes.wrapper} style={{backgroundImage: `url(${bgImg})`, backgroundSize:"cover"}}>
-    <Container component="main" maxWidth="sm">
+    <Container component="main" maxWidth="sm" style={{}}>
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -102,8 +102,8 @@ export default function SignUp() {
           Sign up
         </Typography>
         <form className={classes.form} noValidate>
-              <Grid container spacing={1}>
-                  <Grid item xs={6}>
+              <Grid container spacing={0}>
+                  <Grid item xs={5}>
                       <TextField
                           value={id}
                           onChange={handleChangeId}
@@ -117,8 +117,7 @@ export default function SignUp() {
                           autoComplete="id"
                       />
                   </Grid>
-                  <Grid item xs={6}/>
-                  <Grid item xs={6}>
+                  <Grid item xs={5} style={{marginLeft:"3rem"}}>
                       <TextField
                           value={pw}
                           onChange={handleChangePw}
@@ -132,7 +131,6 @@ export default function SignUp() {
                           autoComplete="pw"
                       />
                   </Grid>
-                  <Grid item xs ={4}/>
                   <Grid item xs={3}>
                       <TextField
                           value={name}
@@ -147,22 +145,7 @@ export default function SignUp() {
                           autoComplete="name"
                       />
                   </Grid>
-                  <Grid item xs={2}/>
-                  <Grid item xs={6}>
-                      <TextField
-                          value={phone}
-                          onChange={handleChangePhone}
-                          variant="outlined"
-                          margin="normal"
-                          required
-                          fullWidth
-                          id="phone"
-                          label="핸드폰 번호"
-                          name="phone"
-                          autoComplete="phone"
-                      />
-                  </Grid>
-                  <Grid item xs={8}>
+                  <Grid item xs={7} style={{marginLeft:"3rem"}}>
                       <TextField
                           value={email}
                           onChange={handleChangeEmail}
@@ -176,8 +159,21 @@ export default function SignUp() {
                           autoComplete="email"
                       />
                   </Grid>
-                  
-                  <Grid item xs={6}>
+                  <Grid item xs={6} >
+                      <TextField
+                          value={phone}
+                          onChange={handleChangePhone}
+                          variant="outlined"
+                          margin="normal"
+                          required
+                          fullWidth
+                          id="phone"
+                          label="핸드폰 번호"
+                          name="phone"
+                          autoComplete="phone"
+                      />
+                  </Grid>
+                  <Grid item xs={4} style={{marginLeft:"3rem"}}>
                       <FormControl className={classes.formControl}>
                           <InputLabel id="select-label">소속</InputLabel>
                           <Select
@@ -192,7 +188,7 @@ export default function SignUp() {
                           <FormHelperText>근무하고 있는 팀을 선택해주세요</FormHelperText>
                       </FormControl>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={4} style={{marginTop:"1rem"}}>
                       <FormControl component="fieldset">
                           <FormLabel component="legend" style={{display:"inline", marginBottom:"15px"}}>성별</FormLabel>
                           <RadioGroup row aria-label="position" name="position" defaultValue="top" value={gender} onChange={handleChange}>
@@ -214,6 +210,7 @@ export default function SignUp() {
               </Grid>
           </form>
           <Button
+          style={{marginTop:"4rem"}}
             type="submit"
             onClick={handleClick}
             fullWidth

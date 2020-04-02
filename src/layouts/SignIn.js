@@ -3,7 +3,7 @@ import {Link, Grid, Box, Avatar, CssBaseline, TextField,
     FormControlLabel, Checkbox, Button, Typography, Container} from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
-import bgImg from "assets/img/cover.jpeg";
+import bgImg from "assets/img/cover.jpg";
 import Axios from 'axios';
 
 function Copyright() {
@@ -68,9 +68,11 @@ export default function SignIn() {
       if(respose.data.user_idx != null){
           alert("로그인 성공");
           window.location.href = "/home";
+      }else {
+        alert("로그인 실패! 아이디나 비밀번호 또는 승인상태를 확인해주세요.");
       }
     }).catch( error => {
-      alert("로그인 실패");
+      alert("로그인 실패! 아이디나 비밀번호 또는 승인상태를 확인해주세요.");
     })
   }
 
@@ -117,6 +119,7 @@ export default function SignIn() {
             label="Remember me"
           /> */}
           <Button
+            style={{marginTop:"2rem"}}
             type="submit"
             href="#"
             onClick = {handleClick}
