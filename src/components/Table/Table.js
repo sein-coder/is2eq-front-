@@ -27,7 +27,7 @@ export default function CustomTable(props) {
                     className={classes.tableCell + " " + classes.tableHeadCell}
                     key={key}
                   >
-                    {prop}
+                    <h3>{prop}</h3>
                   </TableCell>
                 );
               })}

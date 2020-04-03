@@ -1,6 +1,5 @@
 import React from 'react';
-import {Link, Grid, Box, Avatar, CssBaseline, TextField, 
-    FormControlLabel, Checkbox, Button, Typography, Container} from '@material-ui/core'
+import {Link, Grid, Box, Avatar, CssBaseline, TextField, Button, Typography, Container} from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import bgImg from "assets/img/cover.jpg";

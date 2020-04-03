@@ -9,7 +9,7 @@ import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows';
 import ExplicitIcon from '@material-ui/icons/Explicit';
 import {Link} from 'react-router-dom';
 
-import Warning from "@material-ui/icons/Warning";
+import AddBoxIcon from '@material-ui/icons/AddBox';
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -75,7 +75,7 @@ export default function Dashboard() {
         if(index < 8) {
           const temp =[];
           Object.values(element).forEach((item,index)=> {
-            if(index !== 0) {
+            if(index !== 1) {
               temp.push(item+"");
             }
           });
@@ -95,7 +95,7 @@ export default function Dashboard() {
         if(index < 8) {
           const temp =[];
           Object.values(element).forEach((item,index)=> {
-            if(index !== 0) {
+            if(index !== 0 && index !== 1) {
               temp.push(item+"");
             }
           });
@@ -116,11 +116,11 @@ export default function Dashboard() {
       <GridContainer>
         <GridItem xs={12} sm={6} md={3}>
           <Card>
-            <CardHeader color="warning" stats icon>
-              <CardIcon color="warning">
+            <CardHeader color="primary" stats icon>
+              <CardIcon color="primary">
                 <BuildIcon/>
               </CardIcon>
-              <p style={{fontSize:"25px"}} className={classes.cardCategory}>전체 장비 현황</p>
+              <p style={{fontSize:"25px", color:"black"}} className={classes.cardCategory}>전체 장비 현황</p>
               <h3 style={{fontSize:"20px"}} className={classes.cardTitle}>
                 {all} <small>개</small>
               </h3>
@@ -128,22 +128,22 @@ export default function Dashboard() {
             <CardFooter stats>
               <div className={classes.stats}>
                 <Danger>
-                  <Warning />
+                  <AddBoxIcon />
+                  <Link to="/home/eqenroll/all" style={{textDecoration:"none", color:"black"}}>
+                    <h4 style={{display:"inline"}}>장비 등록</h4>
+                  </Link>
                 </Danger>
-                <Link to="/home/eqenroll/all" >
-                  장비 등록
-                </Link>
               </div>
             </CardFooter>
           </Card>
         </GridItem>
         <GridItem xs={12} sm={6} md={3}>
           <Card>
-            <CardHeader color="success" stats icon>
-              <CardIcon color="success">
+            <CardHeader color="primary" stats icon>
+              <CardIcon color="primary">
                 <CameraAltIcon />
               </CardIcon>
-              <p style={{fontSize:"25px"}} className={classes.cardCategory}>카메라 장비 현황</p>
+              <p style={{fontSize:"25px", color:"black"}} className={classes.cardCategory}>카메라 장비 현황</p>
               <h3 style={{fontSize:"20px"}} className={classes.cardTitle}>
                 {cam} <small>개</small>
               </h3>
@@ -151,22 +151,22 @@ export default function Dashboard() {
             <CardFooter stats>
               <div className={classes.stats}>
                 <Danger>
-                  <Warning />
+                  <AddBoxIcon />
+                  <Link to="/home/eqenroll/camera" style={{textDecoration:"none", color:"black"}}>
+                    <h4 style={{display:"inline"}}>카메라 장비 등록</h4>
+                  </Link>
                 </Danger>
-                <Link to="/home/eqenroll/camera">
-                  카메라 장비 등록
-                </Link>
               </div>
             </CardFooter>
           </Card>
         </GridItem>
         <GridItem xs={12} sm={6} md={3}>
           <Card>
-            <CardHeader color="danger" stats icon>
-              <CardIcon color="danger">
+            <CardHeader color="primary" stats icon>
+              <CardIcon color="primary">
                 <DesktopWindowsIcon/>
               </CardIcon>
-              <p style={{fontSize:"25px"}} className={classes.cardCategory}>PC 장비 현황</p>
+              <p style={{fontSize:"25px", color:"black"}} className={classes.cardCategory}>PC 장비 현황</p>
               <h3 style={{fontSize:"20px"}} className={classes.cardTitle}>
                 {pc} <small>개</small>
               </h3>
@@ -174,22 +174,22 @@ export default function Dashboard() {
             <CardFooter stats>
               <div className={classes.stats}>
                 <Danger>
-                  <Warning />
+                  <AddBoxIcon />
+                  <Link to="/home/eqenroll/pc" style={{textDecoration:"none", color:"black"}}>
+                    <h4 style={{display:"inline"}}>PC 장비 등록</h4>
+                  </Link>
                 </Danger>
-                <Link to="/home/eqenroll/pc">
-                  PC 장비 등록
-                </Link>
               </div>
             </CardFooter>
           </Card>
         </GridItem>
         <GridItem xs={12} sm={6} md={3}>
           <Card>
-            <CardHeader color="info" stats icon>
-              <CardIcon color="info">
+            <CardHeader color="primary" stats icon>
+              <CardIcon color="primary">
                 <ExplicitIcon />
               </CardIcon>
-              <p style={{fontSize:"25px"}} className={classes.cardCategory}>기타 장비 현황</p>
+              <p style={{fontSize:"25px", color:"black"}} className={classes.cardCategory}>기타 장비 현황</p>
               <h3 style={{fontSize:"20px"}} className={classes.cardTitle}>
                 {etc} <small>개</small>
               </h3>
@@ -197,11 +197,11 @@ export default function Dashboard() {
             <CardFooter stats>
               <div className={classes.stats}>
                 <Danger>
-                  <Warning />
+                  <AddBoxIcon />
+                  <Link to="/home/eqenroll/etc" style={{textDecoration:"none", color:"black"}}>
+                    <h4 style={{display:"inline"}}>기타 장비 등록</h4>
+                  </Link>
                 </Danger>
-                <Link to="/home/eqenroll/etc">
-                  기타 장비 등록
-                </Link>
               </div>
             </CardFooter>
           </Card>
@@ -216,8 +216,8 @@ export default function Dashboard() {
               </CardHeader>
               <CardBody>
                 <Table
-                  tableHeaderColor="warning"
-                  tableHead={["장비번호", "요청 메소드", "요청 시기"]}
+                  tableHeaderColor="primary"
+                  tableHead={["로그번호", "요청 메소드", "요청 시기"]}
                   tableData={eqlogs}
                 />
               </CardBody>
@@ -225,13 +225,13 @@ export default function Dashboard() {
         </GridItem>
         <GridItem xs={12} sm={12} md={6}>
           <Card>
-            <CardHeader color="warning">
+            <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>최근 로그인 로그</h4>
             </CardHeader>
             <CardBody>
               <Table
-                tableHeaderColor="warning"
-                tableHead={["ID", "Name", "Salary", "Country"]}
+                tableHeaderColor="primary"
+                tableHead={["아이디", "로그인/아웃", "날짜"]}
                 tableData={userlogs}
               />
             </CardBody>

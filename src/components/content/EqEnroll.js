@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
@@ -14,6 +14,9 @@ import ExplicitIcon from '@material-ui/icons/Explicit';
 import CameraEnroll from 'components/content/Enroll/CameraEnroll';
 import EtcEnroll from 'components/content/Enroll/EtcEnroll';
 import PcEnroll from "components/content/Enroll/PCEnroll";
+
+import axios from 'axios';
+
 const styles = {
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -47,6 +50,21 @@ export default function EqEnroll(props) {
     }
   }
 
+  const [dataArray, setDataArray] = React.useState({});
+
+  useEffect(() => {
+    axios.get('/projects').then(response => {
+      const temp = {};
+      response.data.forEach(element => {
+        temp[element.project_idx] = element.project_name+ " - "+element.project_usage;
+      });
+      setDataArray(temp);
+    }).catch(error => {
+      console.log(error);
+    });
+  },[]);
+
+
   const classes = useStyles();
   return (
     <div>
@@ -61,21 +79,21 @@ export default function EqEnroll(props) {
                 tabName: "카메라 장비",
                 tabIcon: CameraAltIcon,
                 tabContent: (
-                  <CameraEnroll/>
+                  <CameraEnroll dataArray={dataArray}/>
                 )
               },
               {
                 tabName: "PC 장비",
                 tabIcon: DesktopWindowsIcon,
                 tabContent: (
-                  <PcEnroll/>
+                  <PcEnroll dataArray={dataArray}/>
                 )
               },
               {
                 tabName: "기타 장비",
                 tabIcon: ExplicitIcon,
                 tabContent: (
-                  <EtcEnroll/>
+                  <EtcEnroll dataArray={dataArray}/>
                 )
               }
             ]}

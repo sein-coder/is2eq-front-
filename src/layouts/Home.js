@@ -93,7 +93,7 @@ export default function Home() {
       <NavBar themeName = {themeName} loginUser = {loginUser.user_idx}/>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container  style={{minHeight:"100vh"}} maxWidth="xl" className={classes.container}>
+        <Container  style={{minHeight:"100vh", backgroundColor:"#fef7e1"}} maxWidth="xl" className={classes.container}>
           {
               (function() {
                   if(loginUser.user_idx === -1 && loginUser.user_id === "root") return;

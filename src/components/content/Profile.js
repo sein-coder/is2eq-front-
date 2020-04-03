@@ -119,8 +119,7 @@ export default function UserProfile() {
         <GridItem xs={12} sm={12} md={8}>
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Edit Profile</h4>
-              <p className={classes.cardCategoryWhite}>Complete your profile</p>
+              <h2 className={classes.cardTitleWhite}>{id}의 프로필</h2>
             </CardHeader>
             <CardBody>
               <GridContainer>

@@ -59,7 +59,7 @@ export default function AdminTable(props) {
                     className={classes.tableCell + " " + classes.tableHeadCell}
                     key={key}
                   >
-                    {prop}
+                    <h2>{prop}</h2>
                   </TableCell>
                 );
               })}
@@ -73,7 +73,7 @@ export default function AdminTable(props) {
                 {prop.map((prop, key) => {
                   return (
                     <TableCell className={classes.tableCell} key={key}>
-                      {prop}
+                      <h3>{prop}</h3>
                     </TableCell>
                   );
                 })}

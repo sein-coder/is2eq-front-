@@ -66,6 +66,8 @@ export default function CustomTabs(props) {
             );
           })}
         </Tabs>
+        <h3>검색 필터</h3>
+        
       </CardHeader>
       <CardBody>
         {tabs.map((prop, key) => {

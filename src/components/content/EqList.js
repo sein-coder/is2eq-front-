@@ -7,13 +7,11 @@ import BuildIcon from '@material-ui/icons/Build';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows';
 import ExplicitIcon from '@material-ui/icons/Explicit';
-
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import EqListTable from "components/Table/EqListTable.js";
 import EqListTab from "components/Tab/EqListTab.js";
-
 import axios from "axios"
 
 import styles from "assets/css/dashboardStyle.js";
@@ -25,13 +23,14 @@ export default function EqList() {
   const [cameraarray, setCameraArray] = React.useState([]);
   const [pcarray, setPcArray] = React.useState([]);
   const [etcarray, setEtcArray] = React.useState([]);
-  
+
   useEffect(() => {
     axios.get('/equipments')
       .then(function(response){
       const dataArray = [];
-      response.data.forEach(element => {
+      response.data.forEach((element,index) => {
         const temp =[];
+        temp.push(index+1+"");
         Object.values(element).forEach((item,index)=> {
           if(index !== 1 && index !== 3 && index !== 5 && index !== 7 && index !== 10) {
             if(Object.values(element).length-1 !== index){
@@ -58,8 +57,9 @@ export default function EqList() {
   axios.get('/equipments?type=category_idx&filter=1')
     .then(function(response){
       const dataArray = [];
-      response.data.forEach(element => {
+      response.data.forEach((element,index) => {
         const temp =[];
+        temp.push(index+1+"");
         Object.values(element).forEach((item,index)=> {
           if(index !== 1 && index !== 3 && index !== 5 && index !== 7 && index !== 10) {
             if(Object.values(element).length-1 !== index){
@@ -88,8 +88,9 @@ export default function EqList() {
     axios.get('/equipments?type=category_idx&filter=2')
     .then(function(response){
       const dataArray = [];
-      response.data.forEach(element => {
+      response.data.forEach((element,index) => {
         const temp =[];
+        temp.push(index+1+"");
         Object.values(element).forEach((item,index)=> {
           if(index !== 1 && index !== 3 && index !== 5 && index !== 7 && index !== 10) {
             if(Object.values(element).length-1 !== index){
@@ -118,8 +119,9 @@ export default function EqList() {
     axios.get('/equipments?type=category_idx&filter=3')
     .then(function(response){
       const dataArray = [];
-      response.data.forEach(element => {
+      response.data.forEach((element,index) => {
         const temp =[];
+        temp.push(index+1+"");
         Object.values(element).forEach((item,index)=> {
           if(index !== 1 && index !== 3 && index !== 5 && index !== 7 && index !== 10) {
             if(Object.values(element).length-1 !== index){
@@ -163,8 +165,8 @@ export default function EqList() {
                 tabIcon: BuildIcon,
                 tabContent: (
                   <EqListTable
-                tableHeaderColor="warning"
-                tableHead={["장비번호", "분류", "장소", "장비 현황", "프로젝트", "용도", "자산 소유", "소유주명", "입고 날짜", "반납날짜","상세보기","삭제"]}
+                tableHeaderColor="primary"
+                tableHead={["번호", "분류", "장소", "장비 현황", "프로젝트", "용도", "자산 소유", "소유주명", "입고 날짜", "반납날짜","상세보기","삭제"]}
                 tableData={allarray}
               />
                 )
@@ -174,8 +176,8 @@ export default function EqList() {
                 tabIcon: CameraAltIcon,
                 tabContent: (
                   <EqListTable
-                tableHeaderColor="warning"
-                tableHead={["장비번호", "분류", "장소", "장비 현황", "프로젝트", "용도", "자산 소유", "소유주명", "입고 날짜", "반납날짜","상세보기","삭제"]}
+                tableHeaderColor="primary"
+                tableHead={["번호", "분류", "장소", "장비 현황", "프로젝트", "용도", "자산 소유", "소유주명", "입고 날짜", "반납날짜","상세보기","삭제"]}
                 tableData={cameraarray}
               />
                 )
@@ -185,8 +187,8 @@ export default function EqList() {
                 tabIcon: DesktopWindowsIcon,
                 tabContent: (
                   <EqListTable
-                tableHeaderColor="warning"
-                tableHead={["장비번호", "분류", "장소", "장비 현황", "프로젝트", "용도", "자산 소유", "소유주명", "입고 날짜", "반납날짜","상세보기","삭제"]}
+                tableHeaderColor="primary"
+                tableHead={["번호", "분류", "장소", "장비 현황", "프로젝트", "용도", "자산 소유", "소유주명", "입고 날짜", "반납날짜","상세보기","삭제"]}
                 tableData={pcarray}
               />
                 )
@@ -196,8 +198,8 @@ export default function EqList() {
                 tabIcon: ExplicitIcon,
                 tabContent: (
                   <EqListTable
-                tableHeaderColor="warning"
-                tableHead={["장비번호", "분류", "장소", "장비 현황", "프로젝트", "용도", "자산 소유", "소유주명", "입고 날짜", "반납날짜","상세보기","삭제"]}
+                tableHeaderColor="primary"
+                tableHead={["번호", "분류", "장소", "장비 현황", "프로젝트", "용도", "자산 소유", "소유주명", "입고 날짜", "반납날짜","상세보기","삭제"]}
                 tableData={etcarray}
               />
                 )

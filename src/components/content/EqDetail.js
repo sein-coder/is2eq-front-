@@ -39,6 +39,7 @@ export default function EqDetail() {
     const idx = window.location.pathname.split("/")[window.location.pathname.split("/").length-1];
     
     const [dataObj, setDataObj] = React.useState({});
+    const [dataArray, setDataArray] = React.useState({});
 
     useEffect(() => {
         axios.get(window.location.pathname.split("/home")[1])
@@ -52,7 +53,19 @@ export default function EqDetail() {
         .catch(function(error){
           console.log(error);
         })
+
+        axios.get('/projects').then(response => {
+          const temp = {};
+          response.data.forEach(element => {
+            temp[element.project_idx] = element.project_name+ " - "+element.project_usage;
+          });
+          setDataArray(temp);
+        }).catch(error => {
+          console.log(error);
+        });
       }, [])
+
+    
     const classes = useStyles();
     return (
         <div>
@@ -60,14 +73,14 @@ export default function EqDetail() {
             <GridItem xs={12} sm={12} md={12}>
                 <Card>
                     <CardHeader color="primary">
-                    <h2 className={classes.cardTitle}>{idx}번 장비 상세 정보</h2>
+                    <h2 className={classes.cardTitle}>{dataObj.category_name} 장비 상세 정보</h2>
                     </CardHeader>
                     <CardBody>
                         {
                             (function() {
-                                if (dataObj.category_idx === 1) return (<CameraDetail data={dataObj} idx = {idx}/>);
-                                else if(dataObj.category_idx === 2)  return (<PcDetail data={dataObj} idx = {idx}/>);
-                                else if(dataObj.category_idx === 3) return (<EtcDetail data={dataObj} idx = {idx}/>)
+                                if (dataObj.category_idx === 1) return (<CameraDetail data = {dataObj} idx = {idx} dataArray = {dataArray}/>);
+                                else if(dataObj.category_idx === 2)  return (<PcDetail data = {dataObj} idx = {idx} dataArray = {dataArray}/>);
+                                else if(dataObj.category_idx === 3) return (<EtcDetail data = {dataObj} idx = {idx} dataArray = {dataArray}/>)
                             })()
                         }
                     </CardBody>

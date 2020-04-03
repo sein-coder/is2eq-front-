@@ -8,7 +8,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import SideBar from 'components/SideBar.js';
 import HomeIcon from '@material-ui/icons/Home';
-import bgImg from 'assets/img/cover.jpg';
+// import bgImg from 'assets/img/cover.jpg';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import axios from 'axios';
@@ -55,7 +55,7 @@ const useStyles = makeStyles(theme => ({
   },
   drawerPaper: {
     position: 'relative',
-    backgroundImage: `url(${bgImg})`,
+    backgroundColor : "#fdefc2",
     backgroundSize:"cover",
     whiteSpace: 'nowrap',
     width: drawerWidth,
@@ -123,21 +123,20 @@ export default function NavBar(props) {
     return (
       <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+      <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)} style={{backgroundColor:"#c5e3ad"}}>
         <Toolbar className={classes.toolbar}>
           <IconButton
             edge="start"
-            color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
           >
             <MenuIcon />
           </IconButton>
-          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+          <Typography component="h1" variant="h5" noWrap className={classes.title} style={{color:"#000000"}}>
             {themeName}
           </Typography>
-          <IconButton color="inherit" onClick={handleOnClick}>
+          <IconButton onClick={handleOnClick}>
             Logout
             <ExitToAppIcon/>
           </IconButton>

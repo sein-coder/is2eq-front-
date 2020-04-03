@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Button from "components/CustomButtons/Button.js";
+import Dialog from "components/content/Dialog/ProjectDialog.js";
 import { Select, FormControl, FormHelperText, MenuItem, InputLabel, TextField } from '@material-ui/core';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
@@ -13,14 +14,16 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import styles from "assets/css/customInputStyle.js";
-
+import PropTypes from "prop-types";
 
 import axios from 'axios';
 
 const useStyles = makeStyles(styles);
 
-export default function EtcEnroll() {
+export default function EtcEnroll(props) {
   const classes = useStyles();
+
+  const {  dataArray,} = props;
 
   const [etc_ip, setEtc_ip] = React.useState('');
   const [etc_id, setEtc_id] = React.useState('');
@@ -45,8 +48,19 @@ export default function EtcEnroll() {
   const [received_date, setReceivedDate] = React.useState(null);
   const [return_date, setReturnDate] = React.useState(null);
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => { setOpen(false) };
+
   const handleChangeLocation = e => { setLocation(e.target.value); };
-  const handleChangeProject = e => { setProject(e.target.value); };
+  const handleChangeProject = e => { 
+    if(e.target.value === 0) {
+      setOpen(true);
+    }
+    else {
+      setProject(e.target.value);
+    }
+  };
   const handleChangeStatus = e => { setStatus(e.target.value); };
   const handleChangePossession = e => { setPossession(e.target.value); };
   const handleChangeRemarks = e => {setRemarks(e.target.value)};
@@ -77,7 +91,7 @@ export default function EtcEnroll() {
         }).then(response => {
           if(response.data > 0) {
             alert("등록 성공");
-            window.location.reload();
+            window.location.href = "/home/eqlist";
           }else {
             alert("등록 실패");
           }
@@ -190,24 +204,24 @@ export default function EtcEnroll() {
                           <FormHelperText>장비가 위치한 장소</FormHelperText>
                       </FormControl>
                 </GridItem>
-                <GridItem xs={4} sm={4} md={2}>
+                <GridItem xs={6} sm={6} md={3}>
                     <FormControl style={{marginTop : "35px"}} className={classes.formControl} fullWidth>
-                          <InputLabel id="select-project-label">프로젝트</InputLabel>
+                          <InputLabel id="select-project-label">프로젝트 명 - 용도</InputLabel>
                           <Select
                           labelid="select-project-label"
                           id="project-select"
                           value={project}
                           onChange={handleChangeProject}
                           >
-                          <MenuItem value={1} selected>LG VSass</MenuItem>
-                          <MenuItem value={2}>TView</MenuItem>
-                          <MenuItem value={3}>Ansan</MenuItem>
-                          <MenuItem value={4}>GOP</MenuItem>
-                          <MenuItem value={5}>EP</MenuItem>
-                          <MenuItem value={6}>BS</MenuItem>
-                          <MenuItem value={7}>BIS</MenuItem>
+                          {Object.keys(dataArray).map((prop, key) => {
+                          return (
+                            <MenuItem value={prop} className={classes.tableCell} key={key}>
+                              {dataArray[prop]}
+                            </MenuItem>
+                          )})}
+                          <MenuItem value={0}>프로젝트 추가+</MenuItem>
                           </Select>
-                          <FormHelperText>주로 사용되는 프로젝트</FormHelperText>
+                          <FormHelperText>주로 사용되는 프로젝트 명과 용도</FormHelperText>
                       </FormControl>
                 </GridItem>
                 <GridItem xs={4} sm={4} md={2}>
@@ -243,7 +257,7 @@ export default function EtcEnroll() {
                           <FormHelperText>장비 소유현황</FormHelperText>
                       </FormControl>
                 </GridItem>
-                <GridItem xs={8} sm={8} md={4}></GridItem>
+                <GridItem xs={4} sm={4} md={2}></GridItem>
                 <GridItem xs={4} sm={4} md={2}>
                   <TextField style={{marginTop : "35px"}}
                     value = {owner_name}
@@ -308,6 +322,12 @@ export default function EtcEnroll() {
 
               </GridContainer>
               <Button style={{marginTop: "2rem"}} color="primary" onClick={handleOnClick}>장비 등록</Button>
+
+              <Dialog Open = {open} handleClose = {handleClose}/>
     </div>
   );
 }
+
+EtcEnroll.propTypes = {
+  dataArray: PropTypes.object,
+};

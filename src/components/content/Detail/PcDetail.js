@@ -18,7 +18,7 @@ const useStyles = makeStyles(styles);
 export default function PcDetail(props) {
   const classes = useStyles();
 
-  const {data, idx} = props;
+  const {data, idx, dataArray} = props;
 
   const [pc_ip, setPc_ip] = React.useState(data.pc_ip!==null?data.pc_ip:"");
   const [pc_id, setPc_id] = React.useState(data.pc_id!==null?data.pc_id:"");
@@ -260,25 +260,25 @@ export default function PcDetail(props) {
                           <FormHelperText>장비가 위치한 장소</FormHelperText>
                       </FormControl>
                 </GridItem>
-                <GridItem xs={4} sm={4} md={2}>
+                <GridItem xs={6} sm={6} md={3}>
                     <FormControl style={{marginTop : "35px"}} className={classes.formControl} fullWidth>
-                          <InputLabel id="select-project-label">프로젝트</InputLabel>
+                          <InputLabel id="select-project-label">프로젝트 명 - 용도</InputLabel>
                           <Select
                           labelid="select-project-label"
                           id="project-select"
                           value={project}
                           onChange={handleChangeProject}
                           >
-                          <MenuItem value={1} selected>LG VSass</MenuItem>
-                          <MenuItem value={2}>TView</MenuItem>
-                          <MenuItem value={3}>Ansan</MenuItem>
-                          <MenuItem value={4}>GOP</MenuItem>
-                          <MenuItem value={5}>EP</MenuItem>
-                          <MenuItem value={6}>BS</MenuItem>
-                          <MenuItem value={7}>BIS</MenuItem>
+                          {Object.keys(dataArray).map((prop, key) => {
+                          return (
+                            <MenuItem value={prop} className={classes.tableCell} key={key}>
+                              {dataArray[prop]}
+                            </MenuItem>
+                          )})}
+                          <MenuItem value={0}>프로젝트 추가+</MenuItem>
                           </Select>
-                          <FormHelperText>주로 사용되는 프로젝트</FormHelperText>
-                      </FormControl>
+                          <FormHelperText>주로 사용되는 프로젝트 명과 용도</FormHelperText>
+                    </FormControl>
                 </GridItem>
                 <GridItem xs={4} sm={4} md={2}>
                     <FormControl style={{marginTop : "35px"}} className={classes.formControl} fullWidth>
@@ -313,7 +313,7 @@ export default function PcDetail(props) {
                           <FormHelperText>장비 소유현황</FormHelperText>
                       </FormControl>
                 </GridItem>
-                <GridItem xs={8} sm={8} md={4}></GridItem>
+                <GridItem xs={4} sm={4} md={2}></GridItem>
                 <GridItem xs={4} sm={4} md={2}>
                   <TextField style={{marginTop : "35px"}}
                     value = {owner_name}
@@ -385,5 +385,6 @@ export default function PcDetail(props) {
 
 PcDetail.propTypes = {
   data : PropTypes.object,
-  idx : PropTypes.string
+  idx : PropTypes.string,
+  dataArray : PropTypes.object,
 };

@@ -6,7 +6,7 @@ import {Button, Checkbox, Table, TableHead, TableRow, TableBody, TableCell, Box}
 // core components
 import styles from "assets/css/tableStyle.js";
 import { blackColor } from "assets/css/react";
-
+import Dialog from "components/content/Dialog/ProjectUpdateDialog.js";
 import axios from 'axios';
 
 const useStyles = makeStyles(styles);
@@ -28,6 +28,23 @@ export default function EqListTable(props) {
   const { tableHead, tableData, tableHeaderColor} = props;
   const [checklist, setList] = React.useState('');
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => { setOpen(false) };
+  const handleOpen = (e) => {
+    setProject_idx(e.currentTarget.id);
+    setProject_name(e.currentTarget.value.split('-')[0]);
+    setProject_usage(e.currentTarget.value.split('-')[1]); 
+    setOpen(true)
+  };
+    
+  const [project_name, setProject_name] = React.useState('');
+  const [project_usage, setProject_usage] = React.useState('');
+  const [project_idx, setProject_idx] = React.useState(0);
+  const handleProjectName = e => {setProject_name(e.target.value)};
+  const handleProjectUsage = e => {setProject_usage(e.target.value)};
+
+  
   const handleOnChecked = e => {
     if(e.target.checked === true){
       setList(checklist+","+e.target.id);
@@ -38,9 +55,8 @@ export default function EqListTable(props) {
 
   const handleOnClick = e => {
     if(window.confirm("정말 삭제하시겠습니까?")) {
-      axios.delete("/equipments?idxs="+checklist)
+      axios.delete("/projects?idxs="+checklist)
         .then(function(response){
-
             if(response.data > 0){
               alert("삭제 성공");
               window.location.reload();
@@ -90,9 +106,12 @@ export default function EqListTable(props) {
                     <Button
                         style={{backgroundColor:"#9c27b0" }}
                         color="primary"
-                        href={"/home/equipments/"+props[1]}
+                        id={props[1]}
+                        value={props[2]+"-"+props[3]}
+                        // href={"/home/equipments/"+props[1]}
                         variant="contained"
-                        >상세보기
+                        onClick={handleOpen}
+                        >수정하기
                     </Button>
                 </TableCell>
                 <TableCell className={classes.tableCell}>
@@ -111,6 +130,10 @@ export default function EqListTable(props) {
             variant="contained">삭제하기</Button>
           </Box>
       </Box>
+
+      <Dialog Open = {open} handleClose = {handleClose} 
+        project_idx={project_idx} project_name={project_name} project_usage={project_usage}
+        handleProjectName={handleProjectName} handleProjectUsage={handleProjectUsage}/>
     </div>
   );
 }
