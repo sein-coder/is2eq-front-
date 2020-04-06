@@ -49,8 +49,8 @@ export default function PcDetail(props) {
   const [equip_remarks, setRemarks] = React.useState(data.equip_remarks!==null?data.equip_remarks:"");
   const [owner_name, setOwner_name] = React.useState(data.owner_name!==null?data.owner_name:"");
 
-  const receiveddate = new Date(data.received_date).setDate(new Date(data.received_date).getDate()+1);
-  const returndate = new Date(data.return_date).setDate(new Date(data.return_date).getDate()+1);
+  const receiveddate = data.received_date!==null?new Date(data.received_date).setDate(new Date(data.received_date).getDate()+1):null;
+  const returndate = data.return_date!==null?new Date(data.return_date).setDate(new Date(data.return_date).getDate()+1):null;
 
   const [received_date, setReceivedDate] = React.useState(receiveddate);
   const [return_date, setReturnDate] = React.useState(returndate);

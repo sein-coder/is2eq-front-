@@ -78,7 +78,7 @@ export default function EqListTable(props) {
               return (
                 <TableRow key={key} className={classes.tableBodyRow}>
                 {props.map((prop, key) => {
-                  if(prop == "미기재" || prop == "미정" || prop == "미확인") {
+                  if(prop === "미기재" || prop === "미정" || prop === "미확인") {
                     return (
                     <TableCell className={classes.tableCell} key={key}>
                       <h4 style={{color:"red"}}>{prop}</h4>

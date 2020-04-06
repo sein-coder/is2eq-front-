@@ -1,6 +1,24 @@
 import { hexToRgb, whiteColor } from "assets/css/react.js";
 
 const customTabsStyle = {
+  select: {
+    color : whiteColor,
+    '&:before': {
+        borderColor: whiteColor,
+    },
+    '&:after': {
+        borderColor: whiteColor,
+    }
+  },
+  icon: {
+      fill: whiteColor,
+  },
+  filterTitle: {
+    marginTop : "10px",
+    float: "left",
+    padding: "10px 10px 10px 0px",
+    lineHeight: "24px"
+  },
   cardTitle: {
     float: "left",
     padding: "10px 10px 10px 0px",
