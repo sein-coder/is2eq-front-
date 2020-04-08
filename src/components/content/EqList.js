@@ -45,19 +45,22 @@ export default function EqList() {
       });
       dataArray.push(temp);
     });
+    dataArray.sort((a,b) => {
+      return (a[3]!=="미기재")&&(a[3].length < b[3].length) ? -1 : a[3] < b[3] ? -1 : a[3] > b[3] ? 1 : 0;
+    });
     return dataArray;
   }
 
   const getListData = (condition) => {
-    if(condition !== null) {
-      axios.get('/equipments?type='+condition.type+"&filter="+condition.filter)
+    if(condition !== null && condition.filter !== '') {
+      axios.get('/equipments?filter='+condition.filter)
       .then(function(response){
         setAllArray(dataPreProcess(response.data));
       })
       .catch(function(error){
         console.log(error);
       })
-      axios.get('/equipments?type=category_idx&filter=1')
+      axios.get('/equipments?type=1&filter='+condition.filter)
       .then(function(response){
         setCameraArray(dataPreProcess(response.data));
       })
@@ -65,7 +68,7 @@ export default function EqList() {
         console.log(error);
       })
   
-      axios.get('/equipments?type=category_idx&filter=2')
+      axios.get('/equipments?type=2&filter='+condition.filter)
       .then(function(response){
         setPcArray(dataPreProcess(response.data));
       })
@@ -73,7 +76,7 @@ export default function EqList() {
         console.log(error);
       })
   
-      axios.get('/equipments?type=category_idx&filter=3')
+      axios.get('/equipments?type=3&filter='+condition.filter)
       .then(function(response){
         setEtcArray(dataPreProcess(response.data));
       })
@@ -88,7 +91,7 @@ export default function EqList() {
       .catch(function(error){
         console.log(error);
       })
-      axios.get('/equipments?type=category_idx&filter=1')
+      axios.get('/equipments?type=1')
       .then(function(response){
         setCameraArray(dataPreProcess(response.data));
       })
@@ -96,7 +99,7 @@ export default function EqList() {
         console.log(error);
       })
   
-      axios.get('/equipments?type=category_idx&filter=2')
+      axios.get('/equipments?type=2')
       .then(function(response){
         setPcArray(dataPreProcess(response.data));
       })
@@ -104,7 +107,7 @@ export default function EqList() {
         console.log(error);
       })
   
-      axios.get('/equipments?type=category_idx&filter=3')
+      axios.get('/equipments?type=3')
       .then(function(response){
         setEtcArray(dataPreProcess(response.data));
       })
@@ -119,10 +122,9 @@ export default function EqList() {
   }, [])
 
   const handleOnClick = (event) => {
-    console.log(event.currentTarget.value);
+    console.log(event.currentTarget.name);
     const condition = {
-      type : "category_idx",
-      filter : "3"
+      filter : event.currentTarget.value
     };
     getListData(condition);
   };

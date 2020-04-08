@@ -35,6 +35,7 @@ export default function CustomTabs(props) {
   };
 
   const [searchFilter, setSearchFilter] = React.useState("");
+  const [searchName, setSearchName] = React.useState("");
 
   const [ip, setIp] = React.useState('');
   const [s_c, setS_C] = React.useState('');
@@ -42,61 +43,85 @@ export default function CustomTabs(props) {
   const [status, setStatus] = React.useState('');
   const [project, setProject] = React.useState('');
 
-  const preProcessing = (type) => {
-
-  }
-
+  const [orderName, setOrderName] = React.useState('');
+  const [orderType, setOrderType] = React.useState('');
+  
   const handleChangeFilter = (e) => {
     switch (e.currentTarget.id) {
+      case "orderName" :
+        var temp = "";
+        searchName.split(',').forEach((item) => {
+          if(item.indexOf('orderName')!== 0 && item !== "") {
+            temp += item+",";
+          }
+        });
+        setOrderName(e.target.value);
+        setSearchName(temp+"orderName:"+e.target.value+",");
+        break;
+      case "orderType" :
+        var temp = "";
+        searchName.split(',').forEach((item) => {
+          if(item.indexOf('orderType')!== 0 && item !== "") {
+            temp += item+",";
+          }
+        });
+        setSearchName(temp+"orderType:"+e.target.value+",");
+        setOrderType(e.target.value);
+        break;
       case "s_c":
         var temp = "";
-        searchFilter.split(',').forEach((item, index) => {
+        searchFilter.split(',').forEach((item) => {
           if(item.indexOf('s_c')!== 0 && item !== "") {
             temp += item+",";
           }
         });
+        if(e.target.value === 0) setS_C('');
+        else setS_C(e.target.value);
         setSearchFilter(temp+"s_c:"+e.target.value+",");
-        setS_C(e.target.value);
         break;
       case "location":
-        var temp = "";
-        searchFilter.split(',').forEach((item, index) => {
+        temp = "";
+        searchFilter.split(',').forEach((item) => {
           if(item.indexOf('location')!== 0 && item !== "") {
             temp += item+",";
           }
         });
+        if(e.target.value === 0) setLocation('');
+        else setLocation(e.target.value);
         setSearchFilter(temp+"location:"+e.target.value+",");
-        setLocation(e.target.value);
         break;
       case "status":
-        var temp = "";
-        searchFilter.split(',').forEach((item, index) => {
+        temp = "";
+        searchFilter.split(',').forEach((item) => {
           if(item.indexOf('status')!== 0 && item !== "") {
             temp += item+",";
           }
         });
+        if(e.target.value === 0) setStatus('');
+        else setStatus(e.target.value);
         setSearchFilter(temp+"status:"+e.target.value+",");
-        setStatus(e.target.value);
         break;
       case "project":
-        var temp = "";
-        searchFilter.split(',').forEach((item, index) => {
+        temp = "";
+        searchFilter.split(',').forEach((item) => {
           if(item.indexOf('project')!== 0 && item !== "") {
             temp += item+",";
           }
         });
+        if(e.target.value === 0) setProject('');
+        else setProject(e.target.value);
         setSearchFilter(temp+"project:"+e.target.value+",");
-        setProject(e.target.value);
         break;
       default:
-        var temp = "";
-        searchFilter.split(',').forEach((item, index) => {
+        temp = "";
+        searchFilter.split(',').forEach((item) => {
           if(item.indexOf('ip')!== 0 && item !== "") {
             temp += item+",";
           }
         });
-        setSearchFilter(temp+"ip:"+e.target.value+",");
-        setIp(e.currentTarget.value);
+        if(e.target.value === '') setSearchFilter(temp);
+        else setSearchFilter(temp+"ip:"+e.target.value+",");
+        setIp(e.target.value);
         break;
     }
   }
@@ -189,9 +214,10 @@ export default function CustomTabs(props) {
                   },
               }}
               >
-              <MenuItem id="s_c" value={"미정/미기재"}>미정/미기재</MenuItem>
-              <MenuItem id="s_c" value={"서버용"}>서버용</MenuItem>
-              <MenuItem id="s_c" value={"클라이언트용"}>클라이언트용</MenuItem>
+              <MenuItem id="s_c" value={0}>선택 취소</MenuItem>
+              <MenuItem id="s_c" value={11}>미정/미기재</MenuItem>
+              <MenuItem id="s_c" value={12}>서버용</MenuItem>
+              <MenuItem id="s_c" value={13}>클라이언트용</MenuItem>
               </Select>
               <FormHelperText style={{color:whiteColor}}>장비 사용 현황</FormHelperText>
               </FormControl>
@@ -211,6 +237,7 @@ export default function CustomTabs(props) {
                 },
             }}
               >
+              <MenuItem id="location" value={0}>선택 취소</MenuItem>
               <MenuItem id="location" value={1}>미확인</MenuItem>
               <MenuItem id="location" value={2}>텔코웨어 1층</MenuItem>
               <MenuItem id="location" value={3}>텔코웨어 2층</MenuItem>
@@ -238,6 +265,7 @@ export default function CustomTabs(props) {
                 },
             }}
               >
+              <MenuItem id="status" value={0}>선택 취소</MenuItem>
               <MenuItem id="status" value={1}>미정</MenuItem>
               <MenuItem id="status" value={2}>비가용</MenuItem>
               <MenuItem id="status" value={3}>사용중</MenuItem>
@@ -261,6 +289,7 @@ export default function CustomTabs(props) {
                 },
             }}
               >
+              <MenuItem id="project" value={0}>선택 취소</MenuItem>
               {Object.keys(dataArray).map((prop, key) => {
                 return (
                   <MenuItem id="project" value={prop} className={classes.tableCell} key={key}>
@@ -271,8 +300,58 @@ export default function CustomTabs(props) {
               <FormHelperText style={{color:whiteColor}}>장비 사용 현황</FormHelperText>
               </FormControl>
           </GridItem>
+        </GridContainer>
+        <div className={classes.orderTitle}>정렬 필터</div>
+        <GridContainer className={classes.tabsRoot}>
+          <GridItem xs={4} sm={4} md={2} style={{marginTop : "10px"}}>
+            <FormControl className={classes.formControl} fullWidth>
+              <InputLabel style={{color:whiteColor}} id="select-orderName-label">정렬 조건</InputLabel>
+              <Select
+              className={classes.select}
+              value={orderName}
+              onChange={handleChangeFilter}
+              labelid="select-orderName-label"
+              id="orderName-select"
+              inputProps={{
+                  classes : {
+                    icon : classes.icon,
+                  },
+              }}
+              >
+              <MenuItem id="orderName" value={'ip'}>IP</MenuItem>
+              <MenuItem id="orderName" value={'s_c'}>S/C</MenuItem>
+              <MenuItem id="orderName" value={'location'}>장소</MenuItem>
+              <MenuItem id="orderName" value={'status'}>현황</MenuItem>
+              <MenuItem id="orderName" value={'project'}>프로젝트</MenuItem>
+              </Select>
+              <FormHelperText style={{color:whiteColor}}>IP 정렬 조건</FormHelperText>
+              </FormControl>
+          </GridItem>
+          <GridItem xs={4} sm={4} md={2} style={{marginTop : "10px"}}>
+            <FormControl className={classes.formControl} fullWidth>
+              <InputLabel style={{color:whiteColor}} id="select-orderType-label">정렬 방식</InputLabel>
+              <Select
+              className={classes.select}
+              value={orderType}
+              onChange={handleChangeFilter}
+              labelid="select-orderType-label"
+              id="orderType-select"
+              inputProps={{
+                  classes : {
+                    icon : classes.icon,
+                  },
+              }}
+              >
+              <MenuItem id="orderType" value={'ASC'}>오름차순</MenuItem>
+              <MenuItem id="orderType" value={'DESC'}>내림차순</MenuItem>
+              </Select>
+              <FormHelperText style={{color:whiteColor}}>오름차순/내림차순</FormHelperText>
+              </FormControl>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={6} className={classes.tabRootButton}>
+          </GridItem>
           <GridItem xs={4} sm={4} md={2} className={classes.tabRootButton}>
-            <Button style={{marginTop:"15px", color:whiteColor}} onClick={handleOnClick} value={searchFilter}>검색</Button>
+            <Button style={{marginTop:"25px", color:whiteColor}} onClick={handleOnClick} value={searchFilter} name={searchName}>검색</Button>
           </GridItem>
         </GridContainer>
       </CardHeader>

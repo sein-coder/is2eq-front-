@@ -13,6 +13,12 @@ const customTabsStyle = {
   icon: {
       fill: whiteColor,
   },
+  orderTitle : {
+    marginTop : "20px",
+    float: "left",
+    padding: "10px 10px 10px 0px",
+    lineHeight: "24px"
+  },
   filterTitle: {
     marginTop : "10px",
     float: "left",
