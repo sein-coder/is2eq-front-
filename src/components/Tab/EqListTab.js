@@ -22,7 +22,7 @@ const useStyles = makeStyles(styles);
 
 export default function CustomTabs(props) {
   const classes = useStyles();
-  const { headerColor, plainTabs, tabs, title, rtlActive, selectTab, handleOnClick} = props;
+  const { headerColor, plainTabs, tabs, title, rtlActive, selectTab, handleOnClick, handleInitOnClick} = props;
   const cardTitle = classNames({
     [classes.cardTitle]: true,
     [classes.cardTitleRTL]: rtlActive
@@ -45,31 +45,35 @@ export default function CustomTabs(props) {
 
   const [orderName, setOrderName] = React.useState('');
   const [orderType, setOrderType] = React.useState('');
-  
+
+  var temp = "";
+
   const handleChangeFilter = (e) => {
     switch (e.currentTarget.id) {
       case "orderName" :
-        var temp = "";
+        temp = "";
         searchName.split(',').forEach((item) => {
           if(item.indexOf('orderName')!== 0 && item !== "") {
             temp += item+",";
           }
         });
-        setOrderName(e.target.value);
+        if(e.target.value === '선택 취소') setOrderName('');
+        else setOrderName(e.target.value);
         setSearchName(temp+"orderName:"+e.target.value+",");
         break;
       case "orderType" :
-        var temp = "";
+        temp = "";
         searchName.split(',').forEach((item) => {
           if(item.indexOf('orderType')!== 0 && item !== "") {
             temp += item+",";
           }
         });
+        if(e.target.value === '선택 취소') setOrderType('');
+        else setOrderType(e.target.value);
         setSearchName(temp+"orderType:"+e.target.value+",");
-        setOrderType(e.target.value);
         break;
       case "s_c":
-        var temp = "";
+        temp = "";
         searchFilter.split(',').forEach((item) => {
           if(item.indexOf('s_c')!== 0 && item !== "") {
             temp += item+",";
@@ -140,6 +144,15 @@ export default function CustomTabs(props) {
     });
   },[]);
 
+  const handleInitOnClick2 =(event) => {
+    setOrderName('');
+    setOrderType('');
+    setIp('');
+    setProject('');
+    setLocation('');
+    setStatus('');
+    setS_C('');
+  }
 
   return (
     <Card plain={plainTabs}>
@@ -318,6 +331,7 @@ export default function CustomTabs(props) {
                   },
               }}
               >
+              <MenuItem id="orderName" value={'선택 취소'}>선택 취소</MenuItem>
               <MenuItem id="orderName" value={'ip'}>IP</MenuItem>
               <MenuItem id="orderName" value={'s_c'}>S/C</MenuItem>
               <MenuItem id="orderName" value={'location'}>장소</MenuItem>
@@ -342,16 +356,20 @@ export default function CustomTabs(props) {
                   },
               }}
               >
+              <MenuItem id="orderType" value={'선택 취소'}>선택 취소</MenuItem>
               <MenuItem id="orderType" value={'ASC'}>오름차순</MenuItem>
               <MenuItem id="orderType" value={'DESC'}>내림차순</MenuItem>
               </Select>
               <FormHelperText style={{color:whiteColor}}>오름차순/내림차순</FormHelperText>
               </FormControl>
           </GridItem>
-          <GridItem xs={12} sm={12} md={6} className={classes.tabRootButton}>
+          <GridItem xs={12} sm={12} md={4} className={classes.tabRootButton}>
           </GridItem>
-          <GridItem xs={4} sm={4} md={2} className={classes.tabRootButton}>
-            <Button style={{marginTop:"25px", color:whiteColor}} onClick={handleOnClick} value={searchFilter} name={searchName}>검색</Button>
+          <GridItem xs={2} sm={2} md={1} className={classes.tabRootButton}>
+            <Button variant="outlined" style={{marginTop:"25px", color:whiteColor}} onClick={handleInitOnClick}>초기화</Button>
+          </GridItem>
+          <GridItem xs={2} sm={2} md={1} className={classes.tabRootButton}>
+            <Button variant="outlined" style={{marginTop:"25px", color:whiteColor}} onClick={handleOnClick} value={searchFilter} name={searchName}>검색</Button>
           </GridItem>
         </GridContainer>
       </CardHeader>
@@ -388,4 +406,5 @@ CustomTabs.propTypes = {
   rtlActive: PropTypes.bool,
   plainTabs: PropTypes.bool,
   handleOnClick : PropTypes.func,
+  handleInitOnClick : PropTypes.func,
 };

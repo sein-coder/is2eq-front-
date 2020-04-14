@@ -24,7 +24,7 @@ export default function EqList() {
   const [pcarray, setPcArray] = React.useState([]);
   const [etcarray, setEtcArray] = React.useState([]);
 
-  const dataPreProcess = (responseData) => {
+  const dataPreProcess = (responseData, order) => {
     const dataArray = [];
       responseData.forEach((element,index) => {
       const temp = []
@@ -45,24 +45,95 @@ export default function EqList() {
       });
       dataArray.push(temp);
     });
-    dataArray.sort((a,b) => {
-      return (a[3]!=="미기재")&&(a[3].length < b[3].length) ? -1 : a[3] < b[3] ? -1 : a[3] > b[3] ? 1 : 0;
-    });
+
+    if(order !== undefined && order !== '') {
+      const orderObj = { };
+      order.split(',').forEach(element => {
+        if(element !== '') {
+          orderObj[element.split(':')[0]] = element.split(':')[1];
+        }
+      })
+      if(orderObj['orderType'] === '' || orderObj['orderType'] === undefined) { orderObj['orderType'] = 'ASC' }
+      switch(orderObj['orderName']) {
+        case 'ip' : 
+          if(orderObj['orderType'] === 'ASC') {
+            dataArray.sort((a,b) => {
+              if(a[3] === "미기재" || b[3] === "미기재") { return (a[3].length > b[3].length) ? -1 : 1 }
+              return (a[3].length < b[3].length) ? -1 : 1;
+            });
+          }else {
+            dataArray.sort((a,b) => {
+              return (a[3].length > b[3].length) ? -1 : 1;
+            });
+          }
+          break;
+        case 's_c' : 
+          if(orderObj['orderType'] === 'ASC') {
+            dataArray.sort((a,b) => {
+              if(a[2] === "미기재" || a[2] === '미정' || b[2] === "미기재" || b[2] === '미정') { return a[2] > b[2]? -1 : 1};
+              return (a[2] < b[2]) ? -1 : 1;
+            });
+          }else {
+            dataArray.sort((a,b) => {
+              return (a[2] > b[2]) ? -1 : 1;
+            });
+          }
+          break;
+        case 'location' : 
+          if(orderObj['orderType'] === 'ASC') {
+            dataArray.sort((a,b) => {
+              if(a[5] === '미확인' || b[5] === '미확인') { return (a[5].length > b[5].length) ? -1 : 1 }
+              return (a[5] < b[5]) ? -1 : 1;
+            });
+          }else {
+            dataArray.sort((a,b) => {
+              return (a[5] > b[5]) ? -1 : 1;
+            });
+          }
+          break;
+        case 'status' : 
+          if(orderObj['orderType'] === 'ASC') {
+            dataArray.sort((a,b) => {
+              if(a[6] === '미정' || b[6] === '미정') { return (a[6] > b[6]) ? -1 : 1 }
+              return (a[6] < b[6]) ? -1 : 1;
+            });
+          }else {
+            dataArray.sort((a,b) => {
+              return (a[6] > b[6]) ? -1 : 1;
+            });
+          }
+          break;
+        case 'project' : 
+          if(orderObj['orderType'] === 'ASC') {
+            dataArray.sort((a,b) => {
+              return (a[7] < b[7]) ? -1 : 1;
+            });
+          }else {
+            dataArray.sort((a,b) => {
+              if(a[7] === "미기재" || b[7] === "미기재") { return (a[7] < b[7]) ? -1 : 1 }
+              return (a[7] > b[7]) ? -1 : 1;
+            });
+          }
+          break;
+        default :
+          break;
+      }
+    }
     return dataArray;
   }
 
   const getListData = (condition) => {
-    if(condition !== null && condition.filter !== '') {
+    if(condition !== null) {
       axios.get('/equipments?filter='+condition.filter)
       .then(function(response){
-        setAllArray(dataPreProcess(response.data));
+        setAllArray(dataPreProcess(response.data, condition.order));
       })
       .catch(function(error){
         console.log(error);
       })
       axios.get('/equipments?type=1&filter='+condition.filter)
       .then(function(response){
-        setCameraArray(dataPreProcess(response.data));
+        setCameraArray(dataPreProcess(response.data, condition.order));
       })
       .catch(function(error){
         console.log(error);
@@ -70,7 +141,7 @@ export default function EqList() {
   
       axios.get('/equipments?type=2&filter='+condition.filter)
       .then(function(response){
-        setPcArray(dataPreProcess(response.data));
+        setPcArray(dataPreProcess(response.data, condition.order));
       })
       .catch(function(error){
         console.log(error);
@@ -78,7 +149,7 @@ export default function EqList() {
   
       axios.get('/equipments?type=3&filter='+condition.filter)
       .then(function(response){
-        setEtcArray(dataPreProcess(response.data));
+        setEtcArray(dataPreProcess(response.data, condition.order));
       })
       .catch(function(error){
         console.log(error);
@@ -122,11 +193,15 @@ export default function EqList() {
   }, [])
 
   const handleOnClick = (event) => {
-    console.log(event.currentTarget.name);
     const condition = {
-      filter : event.currentTarget.value
+      filter : event.currentTarget.value,
+      order : event.currentTarget.name
     };
     getListData(condition);
+  };
+
+  const handleInitOnClick = (event) => {
+    getListData(null);
   };
 
   const classes = useStyles();
@@ -136,6 +211,7 @@ export default function EqList() {
         <GridItem xs={12} sm={12} md={12}>
           <EqListTab
             handleOnClick = {handleOnClick}
+            handleInitOnClick = {handleInitOnClick}
             selectTab={0}
             title="카테고리:"
             headerColor="primary"

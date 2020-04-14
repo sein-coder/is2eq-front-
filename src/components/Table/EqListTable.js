@@ -77,6 +77,9 @@ export default function EqListTable(props) {
           {tableData.map((props, key) => {
               return (
                 <TableRow key={key} className={classes.tableBodyRow}>
+                  <TableCell>
+                      <h3>{key+1}</h3>
+                  </TableCell>
                 {props.map((prop, key) => {
                   if(prop === "미기재" || prop === "미정" || prop === "미확인") {
                     return (
@@ -85,7 +88,7 @@ export default function EqListTable(props) {
                     </TableCell>
                     );
                   }
-                  else if(key !== 1) {
+                  else if(key !== 1 && key !== 0) {
                     return (
                       <TableCell className={classes.tableCell} key={key}>
                         <h3>{prop}</h3>
