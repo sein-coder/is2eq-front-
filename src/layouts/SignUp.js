@@ -72,7 +72,7 @@ export default function SignUp() {
   
   const handleClick = e => {
     e.preventDefault();
-    axios.post('/users', {
+    axios.post('/users/', {
       "user_id" : {id}.id,
       "user_pw" : {pw}.pw,
       "user_name" : {name}.name,

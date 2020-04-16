@@ -72,7 +72,7 @@ export default function CameraEnroll(props) {
   const handleOnClick = (e) => {
     e.preventDefault();
     if({camera_ip}.camera_ip !== '' && {camera_id}.camera_id !== '' && {camera_pw}.camera_pw !== ''){
-        axios.post('/equipments', {
+        axios.post('/equipments/', {
             "category_idx" : 1,
             "location_idx" : {location}.location,
             "project_idx" : {project}.project,
@@ -89,7 +89,6 @@ export default function CameraEnroll(props) {
             "received_date" : {received_date}.received_date,
             "return_date" : {return_date}.return_date
         }).then(response => {
-          console.log(response.data);
           if(response.data > 0) {
             alert("등록 성공");
             window.location.href = "/home/eqlist";

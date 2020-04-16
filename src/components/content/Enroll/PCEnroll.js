@@ -80,7 +80,7 @@ export default function PcEnroll(props) {
   const handleOnClick = (e) => {
     e.preventDefault();
     if({pc_ip}.pc_ip !== '' && {pc_id}.pc_id !== '' && {pc_pw}.pc_pw !== ''){
-        axios.post('/equipments', {
+        axios.post('/equipments/', {
           "category_idx" : 2,
           "location_idx" : {location}.location,
           "project_idx" : {project}.project,

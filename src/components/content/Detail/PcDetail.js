@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
+import Dialog from "components/content/Dialog/ProjectDialog.js";
 import {Button, Select, FormControl, FormHelperText, MenuItem, InputLabel, TextField } from '@material-ui/core';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
@@ -55,8 +56,19 @@ export default function PcDetail(props) {
   const [received_date, setReceivedDate] = React.useState(receiveddate);
   const [return_date, setReturnDate] = React.useState(returndate);
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => { setOpen(false) };
+
   const handleChangeLocation = e => { setLocation(e.target.value); };
-  const handleChangeProject = e => { setProject(e.target.value); };
+  const handleChangeProject = e => { 
+    if(e.target.value === 0) {
+      setOpen(true);
+    }
+    else {
+      setProject(e.target.value);
+    }
+  };
   const handleChangeStatus = e => { setStatus(e.target.value); };
   const handleChangePossession = e => { setPossession(e.target.value); };
   const handleChangeRemarks = e => {setRemarks(e.target.value)};
@@ -379,6 +391,8 @@ export default function PcDetail(props) {
               </GridContainer>
               <Button style={{marginTop: "2rem", backgroundColor:"#9c27b0"}} color="primary" onClick={handleOnClick}  variant="contained">정보 수정</Button>
               <Button style={{marginTop: "2rem", marginLeft : "2rem", backgroundColor:"#9c27b0"}} color="primary" href={"/home/eqlist/"} variant="contained">나가기</Button>
+
+              <Dialog Open = {open} handleClose = {handleClose}/>
     </div>
   );
 }

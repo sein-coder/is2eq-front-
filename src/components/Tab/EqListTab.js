@@ -57,8 +57,8 @@ export default function CustomTabs(props) {
             temp += item+",";
           }
         });
-        if(e.target.value === '선택 취소') setOrderName('');
-        else setOrderName(e.target.value);
+        if(e.target.value === '선택 취소') { setOrderName(''); }
+        else { setOrderName(e.target.value); }
         setSearchName(temp+"orderName:"+e.target.value+",");
         break;
       case "orderType" :
@@ -143,16 +143,6 @@ export default function CustomTabs(props) {
       console.log(error);
     });
   },[]);
-
-  const handleInitOnClick2 =(event) => {
-    setOrderName('');
-    setOrderType('');
-    setIp('');
-    setProject('');
-    setLocation('');
-    setStatus('');
-    setS_C('');
-  }
 
   return (
     <Card plain={plainTabs}>
@@ -365,8 +355,8 @@ export default function CustomTabs(props) {
           </GridItem>
           <GridItem xs={12} sm={12} md={4} className={classes.tabRootButton}>
           </GridItem>
-          <GridItem xs={2} sm={2} md={1} className={classes.tabRootButton}>
-            <Button variant="outlined" style={{marginTop:"25px", color:whiteColor}} onClick={handleInitOnClick}>초기화</Button>
+          <GridItem className={classes.tabRootButton}>
+            <Button variant="outlined" style={{marginTop:"25px", color:whiteColor}} onClick={handleInitOnClick}>결과 초기화</Button>
           </GridItem>
           <GridItem xs={2} sm={2} md={1} className={classes.tabRootButton}>
             <Button variant="outlined" style={{marginTop:"25px", color:whiteColor}} onClick={handleOnClick} value={searchFilter} name={searchName}>검색</Button>

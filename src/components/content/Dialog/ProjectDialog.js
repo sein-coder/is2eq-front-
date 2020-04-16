@@ -20,7 +20,7 @@ export default function FormDialog(props) {
   const handleProjectUsage = e => {setProject_usage(e.target.value)};
 
   const handleOnClick = e => {
-    axios.post('/projects', {
+    axios.post('/projects/', {
         "project_name" : {project_name}.project_name,
         "project_usage" : {project_usage}.project_usage
     }).then(response => {
@@ -28,10 +28,10 @@ export default function FormDialog(props) {
         alert("등록 성공");
         window.location.reload();
       }else {
-        alert("등록 실패");
+        alert("등록 실패1");
       }
     }).catch(error => {
-      alert("등록 실패");
+      alert("등록 실패2");
     });
   }
 
@@ -54,7 +54,6 @@ export default function FormDialog(props) {
           />
           <TextField
             style={{marginTop:"2rem"}}
-            autoFocus
             margin="dense"
             id="project_usage"
             label="프로젝트 용도"

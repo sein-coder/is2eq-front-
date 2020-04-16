@@ -72,7 +72,7 @@ export default function EtcEnroll(props) {
   const handleOnClick = (e) => {
     e.preventDefault();
     if({etc_ip}.etc_ip !== '' && {etc_id}.etc_id !== '' && {etc_pw}.etc_pw !== ''){
-        axios.post('/equipments', {
+        axios.post('/equipments/', {
             "category_idx" : 3,
             "location_idx" : {location}.location,
             "project_idx" : {project}.project,

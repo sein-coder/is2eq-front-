@@ -226,7 +226,7 @@ export default function Dashboard() {
         <GridItem xs={12} sm={12} md={6}>
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>최근 로그인 로그</h4>
+              <h4 className={classes.cardTitleWhite}>최근 로그인/아웃 로그</h4>
             </CardHeader>
             <CardBody>
               <Table

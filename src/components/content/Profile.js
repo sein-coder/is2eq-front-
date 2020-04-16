@@ -87,6 +87,7 @@ export default function UserProfile() {
     }).then( respose => {
       if(respose.data > 0){
           alert("프로필 수정 성공");
+          window.location.reload();
       }
     }).catch( error => {
       console.log(error);
